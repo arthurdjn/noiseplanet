@@ -21,9 +21,7 @@ def main(file, properties=None, out_dirname=".", method="nearest", db_file='data
         
     # Connecting to the database
     conn = dbc.connect(db_file)
-    
-    
-    
+        
     for i in range(len(files)):              
         # Extract the track informations
         file = files[i]
@@ -51,7 +49,7 @@ def main(file, properties=None, out_dirname=".", method="nearest", db_file='data
         if log:
             print("------------------------")
             print("stats {0}".format(method))
-            print(sts.global_stats(df_corr[['proj_length', 'path_length', 'unlinked', 'proj_accuracy']]))
+            print(sts.global_stats(df_corr[['proj_length', 'path_length', 'unlinked', 'proj_accuracy']]).round(3))
         
         
         # Convert back to geojson  
@@ -93,19 +91,17 @@ if __name__ == "__main__":
     print("1/ Reading the files")
     files = io.open_files("../data/track")
     # files = files[:10]
-    print(files[23:])
-    files = [files[0]]
+    print(files)
     
     properties = io.open_files("../data/track", ext="properties")
     # files = files[:10]
-    print(properties[23:])
-    props = [properties[0]]
+    print(properties)
     
 # =============================================================================
 #     2/ Map matching
 # =============================================================================
     print("2/ Map Matching")
-    main(files, properties=props, out_dirname='../data', method='hmm', db_file='../database/database_hmm_test.db', log=True)
+    main(files, properties=props, out_dirname='../data', method='hmm', db_file='../database/database_hmm.db', log=True)
 
 
 
