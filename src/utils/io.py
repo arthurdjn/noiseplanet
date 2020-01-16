@@ -195,7 +195,7 @@ if __name__ == "__main__":
 #     3/ Read all geojson files in a directory
 # =============================================================================
     print("\n3/ Read all geojson files in a directory")
-    files = open_files("..\\model\\test\\track_test")
+    files = open_files("../model/test/track_test")
     print(files)    
     
     
