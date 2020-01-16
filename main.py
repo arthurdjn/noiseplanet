@@ -200,7 +200,7 @@ if __name__ == "__main__":
 #     1/ Read all the Geojson files
 # =============================================================================
     print("1/ Reading the files")
-    files = io.open_files("data\\track")
+    files = io.open_files("data/track")
     # files = files[:10]
     print(files[23:])
     files = [files[0]]
@@ -210,6 +210,7 @@ if __name__ == "__main__":
 # =============================================================================
     print("2/ Map Matching")
     main(files, out_dirname='data', method='hmm', db_file='database/database_hmm.db', log=True)
+
 
 
 

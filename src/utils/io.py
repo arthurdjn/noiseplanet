@@ -196,6 +196,7 @@ if __name__ == "__main__":
 # =============================================================================
     print("\n3/ Read all geojson files in a directory")
     files = open_files("..\\..\\data\\track")
+
     print(files)    
     
     
