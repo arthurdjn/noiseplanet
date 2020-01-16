@@ -115,6 +115,7 @@ def main(files, out_dirname=".", method="nearest", db_file='database.db', log=Tr
             df_corr.insert(loc=0, column='point_idx', value=df_corr.index.values)
             df_corr.insert(loc=0, column='track_id', value=[file_name]*len(df_corr))
             df_corr['edge_id'] = edgesid
+            df_corr['osmid'] = [graph.edges[(edge_id[0], edge_id[1], 0)]['osmid'] for edge_id in df_corr['edge_id'].values]
             if i == 0:
                 dbc.create_table_from_df(conn, 'point', df_corr)
             dbc.df_to_table(conn, 'point', df_corr)
@@ -178,6 +179,7 @@ def main(files, out_dirname=".", method="nearest", db_file='database.db', log=Tr
                 df_corr.insert(loc=0, column='point_idx', value=df_corr.index.values)
                 df_corr.insert(loc=0, column='track_id', value=[file_name]*len(df_corr))
                 df_corr['edge_id'] = edgesid
+                df_corr['osmid'] = [graph.edges[(edge_id[0], edge_id[1], 0)]['osmid'] for edge_id in df_corr['edge_id'].values]
                 if i == 0:
                     dbc.create_table_from_df(conn, 'point', df_corr)
                 dbc.df_to_table(conn, 'point', df_corr)
@@ -201,13 +203,13 @@ if __name__ == "__main__":
     files = io.open_files("data\\track")
     # files = files[:10]
     print(files[23:])
-    files = files[153:]
+    files = [files[0]]
     
 # =============================================================================
 #     2/ Map matching
 # =============================================================================
     print("2/ Map Matching")
-    main(files, out_dirname='..\\data', method='hmm', db_file='..\\database\\database_hmm.db', log=True)
+    main(files, out_dirname='data', method='hmm', db_file='database/database_hmm.db', log=True)
 
 
 

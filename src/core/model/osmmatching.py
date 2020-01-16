@@ -97,7 +97,8 @@ if __name__ == "__main__":
     df_nearest['longitude'] = track_nearest[:,1]
     df_nearest['latitude'] = track_nearest[:,0]
     df_nearest['edge_id'] = [(states[0], states[1], 0) for states in statesid_nearest]
-    
+    df_nearest['osmid'] = [graph.edges[edge_id]['osmid'] for edge_id in df_nearest['edge_id'].values]
+
     # 4.3/ Visualization Nearest
     print("\t4.3/ Visualization of the nearest routes")
     fig, ax = ox.plot_graph(graph, node_color="skyblue", node_alpha=.5, node_size=15, show=False, close=False, annotate=False) 

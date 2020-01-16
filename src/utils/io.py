@@ -127,7 +127,7 @@ if __name__ == "__main__":
 # =============================================================================
     print('1/ Read a geojson and convert it in dataframe\n')
     trackname = 'track(1)'
-    filename = '..\\model\\test\\track_test\\' + trackname + '.geojson'
+    filename = '..\\..\\data\\track\\' + trackname + '.geojson'
     with open(filename) as f:
         geojson = json.load(f)
         
@@ -195,7 +195,7 @@ if __name__ == "__main__":
 #     3/ Read all geojson files in a directory
 # =============================================================================
     print("\n3/ Read all geojson files in a directory")
-    files = open_files("..\\model\\test\\track_test")
+    files = open_files("..\\..\\data\\track")
     print(files)    
     
     
