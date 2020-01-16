@@ -18,7 +18,11 @@ import src.dbconnect as dbc
 import src.core.representation.hexgrid as hxg
 
 
-def main(files, out_dirname=".", method="nearest", db_file='database.db', log=True):
+def main(files, properties=[], out_dirname=".", method="nearest", db_file='database.db', log=True):
+    
+    
+    if len(files) != len(properties):
+        raise Exception ("Length of files and properties should match")
     
     # Connecting to the database
     conn = dbc.connect(db_file)
@@ -28,28 +32,32 @@ def main(files, out_dirname=".", method="nearest", db_file='database.db', log=Tr
         if log:
             print("========================")
         
+        # Extract the track informations
         file = files[i]
+        file_props = properties[i]
         name = file.split("\\")[-1].split(".")
-        file_name = name[0]
+        filename = name[0]
         ext = name[1]
-        
-        #Open the geojson
+    
+        # Open the geojson
         with open(file) as f:
             geojson = json.load(f)
 
-        # convert in dataframe
+        # Convert in dataframe
         df = io.geojson_to_df(geojson, extract_coordinates=True)
+        df_props = io.properties_to_df(file_props)
+        df_props.insert(loc=0, column='track_id', value=[filename])
         
         # Fill None values by interpolation
         try:
             df = df.interpolate(method='quadratic', axis=0)
         except ValueError as e:
             print(e)
-            print("The interpolation failed for {0}".format(file_name))
+            print("The interpolation failed for {0}".format(filename))
         # Delete rows where no positions
         df = df[df['type'].notnull()]
         
-        
+        # Get lat lon
         track = np.column_stack((df['latitude'].values, df['longitude'].values))
         X = df['longitude'].values
         Y = df['latitude'].values
@@ -60,7 +68,7 @@ def main(files, out_dirname=".", method="nearest", db_file='database.db', log=Tr
         # method nearest
         if method =="nearest":
             if log:
-                print("track name : " + file_name + ", method " + method)
+                print("track name : " + filename + ", method " + method)
                 print("track length : " + str(len(track)))
             
             # compute the projection
@@ -94,8 +102,8 @@ def main(files, out_dirname=".", method="nearest", db_file='database.db', log=Tr
                   lat='latitude', lon='longitude', z='elevation')
             
             # test if the out directory exists
-            directory = out_dirname + '\\track_nearest'
-            outname = directory + '\\' + file_name + '_nearest' + '.' + ext
+            directory = out_dirname + '/track_nearest'
+            outname = directory + '/' + filename + '_nearest' + '.' + ext
             if not os.path.exists(directory):
                 os.makedirs(directory)
             
@@ -113,19 +121,22 @@ def main(files, out_dirname=".", method="nearest", db_file='database.db', log=Tr
             df_corr['hex_id'] = list(zip(Q, R))
             # add to the database
             df_corr.insert(loc=0, column='point_idx', value=df_corr.index.values)
-            df_corr.insert(loc=0, column='track_id', value=[file_name]*len(df_corr))
+            df_corr.insert(loc=0, column='track_id', value=[filename]*len(df_corr))
             df_corr['edge_id'] = edgesid
             df_corr['osmid'] = [graph.edges[(edge_id[0], edge_id[1], 0)]['osmid'] for edge_id in df_corr['edge_id'].values]
+            
             if i == 0:
                 dbc.create_table_from_df(conn, 'point', df_corr)
+                dbc.create_table_from_df(conn, 'meta', df_props)
             dbc.df_to_table(conn, 'point', df_corr)
+            dbc.df_to_table(conn, 'meta', df_props)
             
         # method hmm
         if method =="hmm":
             try:
                 # the leuven library throw exception when points are too far from edges etc.
                 if log:
-                    print("track name : " + file_name + ", method " + method)
+                    print("track name : " + filename + ", method " + method)
                     print("track length : " + str(len(track)))
                 # compute the projection
                 track_corr, route_corr, edgesid, stats = osmm.map_matching(graph, Y, X, method=method)
@@ -158,8 +169,8 @@ def main(files, out_dirname=".", method="nearest", db_file='database.db', log=Tr
                       lat='latitude', lon='longitude', z='elevation')
                 
                 # test if the out directory exists
-                directory = out_dirname + '\\track_hmm'
-                outname = directory + '\\' + file_name + '_hmm' + '.' + ext
+                directory = out_dirname + '/track_hmm'
+                outname = directory + '/' + filename + '_hmm' + '.' + ext
                 if not os.path.exists(directory):
                     os.makedirs(directory)
                 
@@ -177,12 +188,16 @@ def main(files, out_dirname=".", method="nearest", db_file='database.db', log=Tr
                 df_corr['hex_id'] = list(zip(Q, R))
                 # add to the database
                 df_corr.insert(loc=0, column='point_idx', value=df_corr.index.values)
-                df_corr.insert(loc=0, column='track_id', value=[file_name]*len(df_corr))
+                df_corr.insert(loc=0, column='track_id', value=[filename]*len(df_corr))
                 df_corr['edge_id'] = edgesid
                 df_corr['osmid'] = [graph.edges[(edge_id[0], edge_id[1], 0)]['osmid'] for edge_id in df_corr['edge_id'].values]
+                                      
+                # Create the db
                 if i == 0:
                     dbc.create_table_from_df(conn, 'point', df_corr)
+                    dbc.create_table_from_df(conn, 'meta', df_props)
                 dbc.df_to_table(conn, 'point', df_corr)
+                dbc.df_to_table(conn, 'meta', df_props)
             except Exception as e:
                 print(e)
             
@@ -205,11 +220,16 @@ if __name__ == "__main__":
     print(files[23:])
     files = [files[0]]
     
+    properties = io.open_files("data/track", ext="properties")
+    # files = files[:10]
+    print(properties[23:])
+    properties = [properties[0]]
+    
 # =============================================================================
 #     2/ Map matching
 # =============================================================================
     print("2/ Map Matching")
-    main(files, out_dirname='data', method='hmm', db_file='database/database_hmm.db', log=True)
+    main(files, properties=properties, out_dirname='data', method='hmm', db_file='database/database_hmm3.db', log=True)
 
 
 

@@ -76,6 +76,25 @@ def df_to_geojson(df, properties, geometry_type='type',
     return gj
 
 
+def properties_to_df(filepath, sep='=', comment_char='#'):
+    """
+    Read the file passed as parameter as a properties file.
+    """
+    props = {}
+    with open(filepath, "rt") as f:
+        for line in f:
+            l = line.strip()
+            if l and not l.startswith(comment_char):
+                key_value = l.split(sep)
+                key = key_value[0].strip()
+                value = sep.join(key_value[1:]).strip().strip('"') 
+                props[key] = value 
+    return pd.DataFrame(data=props, index=[0])
+
+
+
+
+
 def open_files(dir_name, ext="geojson"):
     """
         *** Get the path of all files in a directory ***
@@ -92,14 +111,14 @@ def open_files(dir_name, ext="geojson"):
     
     -----------------------------------------------------------------------
     Example :
-        >>> dir_name = "path\\to\\your\\directory"
+        >>> dir_name = "path/to/your/directory"
         >>> files = open_files(dir_name, ext="geojson")
         >>> files
-            ['..\\test\\track_test\\track.geojson',
-             '..\\test\\track_test\\track(1).geojson',
-             '..\\test\\track_test\\track(2).geojson',
+            ['../test/track_test/track.geojson',
+             '../test/track_test/track(1).geojson',
+             '../test/track_test/track(2).geojson',
              ...
-             '..\\test\\track_test\\track(100).geojson']
+             '../test/track_test/track(100).geojson']
     -----------------------------------------------------------------------
     """
     try :
@@ -127,7 +146,7 @@ if __name__ == "__main__":
 # =============================================================================
     print('1/ Read a geojson and convert it in dataframe\n')
     trackname = 'track(1)'
-    filename = '..\\..\\data\\track\\' + trackname + '.geojson'
+    filename = '../../data/track/' + trackname + '.geojson'
     with open(filename) as f:
         geojson = json.load(f)
         
@@ -189,13 +208,16 @@ if __name__ == "__main__":
     df_new = geojson_to_df(geojson_new, extract_coordinates=True)
     print(df_new.head())
     
+    trackname = 'meta(1)'
+    filename = '../../data/track/' + trackname + '.properties'
+    props = properties_to_df(filename)
     
     
 # =============================================================================
 #     3/ Read all geojson files in a directory
 # =============================================================================
     print("\n3/ Read all geojson files in a directory")
-    files = open_files("..\\..\\data\\track")
+    files = open_files("../../data/track")
 
     print(files)    
     
