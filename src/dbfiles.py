@@ -15,7 +15,10 @@ import core.model.mapmatching.route as rt
 import core.representation.hexgrid as hxg
 
 
-def correct_track(df, filename="track", method="hmm"):    
+def correct_track(geojson, filename="track", method="hmm"):
+    # Convert in dataframe
+    df = io.geojson_to_df(geojson, extract_coordinates=True)
+    
     # Fill None values by interpolation
     try:
         df = df.interpolate(method='quadratic', axis=0)
@@ -57,7 +60,10 @@ def correct_track(df, filename="track", method="hmm"):
         properties.remove('longitude')
         properties.remove('latitude')
         properties.remove('elevation')
-              
+        gj = io.df_to_geojson(df_corr, properties, geometry_type='type', 
+                              lat='latitude', lon='longitude', z='elevation')
+        
+        
         proj_init="epsg:4326"
         proj_out="epsg:3857"
         origin = (0, 0)
@@ -100,6 +106,8 @@ def correct_track(df, filename="track", method="hmm"):
             properties.remove('longitude')
             properties.remove('latitude')
             properties.remove('elevation')
+            gj = io.df_to_geojson(df_corr, properties, geometry_type='type', 
+                  lat='latitude', lon='longitude', z='elevation')
                        
             proj_init="epsg:4326"
             proj_out="epsg:3857"
@@ -118,7 +126,7 @@ def correct_track(df, filename="track", method="hmm"):
         except Exception as e:
             print(e)
 
-    return df_corr
+    return gj
 
 
 if __name__ == "__main__":
@@ -129,7 +137,7 @@ if __name__ == "__main__":
 #     1/ Read all the Geojson files
 # =============================================================================
     print("1/ Reading the files")
-    files = io.open_files("../../data/track")
+    files = io.open_files("../data/track")
     # files = files[:10]
     print(files[23:])
     filename = files[0]
