@@ -122,6 +122,7 @@ def main(files, out_dirname=".", method="nearest", db_file='database.db', log=Tr
         # method hmm
         if method =="hmm":
             try:
+                # the leuven library throw exception when points are too far from edges etc.
                 if log:
                     print("track name : " + file_name + ", method " + method)
                     print("track length : " + str(len(track)))

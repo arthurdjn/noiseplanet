@@ -14,7 +14,7 @@ from pyproj import Proj, Transformer
 
 def hexbin_grid(bbox, side_length=1, proj_init=None, proj_out=None):
     """ 
-        Create a grid of pointy hexagons
+        Create a grid of hexagons
         
     :param bbox: bounding box of the grid (x_lower_left, y_lower_left, x_upper_right, y_upper_right)
     type bbox: tuple
