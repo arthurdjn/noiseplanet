@@ -180,8 +180,8 @@ def main(files, out_dirname=".", method="nearest", db_file='database.db', log=Tr
                 if i == 0:
                     dbc.create_table_from_df(conn, 'point', df_corr)
                 dbc.df_to_table(conn, 'point', df_corr)
-            except Exception:
-                pass
+            except Exception as e:
+                print(e)
             
             
     # closing the database
@@ -197,7 +197,7 @@ if __name__ == "__main__":
 #     1/ Read all the Geojson files
 # =============================================================================
     print("1/ Reading the files")
-    files = io.open_files("..\\data\\track")
+    files = io.open_files("data\\track")
     # files = files[:10]
     print(files[23:])
     files = files[153:]
