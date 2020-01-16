@@ -19,9 +19,9 @@ import src.core.model.mapmatching.leuven as leuven
 import src.core.model.mapmatching.route as rt
 
 
-def map_matching(graph, X, Y, method='nearest'):
+def map_matching(graph, lat, lon, method='nearest'):
     
-    track = np.column_stack((X, Y))
+    track = np.column_stack((lat, lon))
     
     if method == 'nearest':
         track_coor, route_corr, edgeid, stats = nearest.match_nearest_edge(graph, track)
