@@ -17,9 +17,9 @@ from leuvenmapmatching.matcher.distance import DistanceMatcher   # map matching
 from leuvenmapmatching.map.inmem import InMemMap                 # leuven graph object
 
 # Useful script
-import src.utils.io as io
-import src.core.model.mapmatching.route as rt
-import src.core.model.stats as st
+import utils.io as io
+import core.model.mapmatching.route as rt
+import core.model.stats as st
 
 
 def match_leuven(graph, track):
@@ -27,7 +27,7 @@ def match_leuven(graph, track):
         Algorithm to match the track to the most probable route
             Use Leuven Map Matching algo.
             See the docs : https://leuvenmapmatching.readthedocs.io/en/latest/index.html
-            
+
         :param graph: graph of the area
         type graph: network.classes.multidigraph.MultiDiGraph
         :param track: GPS points (latitudes and longitudes)
@@ -39,44 +39,44 @@ def match_leuven(graph, track):
                 the path linking all edgges together,
                 the states
         rtype: tuple
-        
+
         -----------------------------------------------------------------------
         Description :
             Leuven Map matching algorithm,
             Copyright 2015-2018, KU Leuven - DTAI Research Group, Sirris - Elucidata Group.
-            
+
             leuven with non-emitting states (offline) for Map Matching.
         -----------------------------------------------------------------------
         Example :
             >>> place_name = "2e Arrondissement, Lyon, France"
             >>> distance = 1000  # meters
             >>> graph = ox.graph_from_address(place_name, distance)
-            >>> track = track = [[4.8396232, 45.7532804], 
+            >>> track = track = [[4.8396232, 45.7532804],
                                  [4.839917548464699, 45.75345336404514],
                                  [4.828226357067425, 45.747825316200384]]
             >>> track_corr, route_corr, states = match_leuven(graph, track)
             >>> track_corr
-            
+
             >>> route
-            
+
             >>> states
-            
+
         -----------------------------------------------------------------------
     """
-    
+
     # Reference ellipsoid for distance
     geod = Geod(ellps='WGS84')
-    
+
     # Creation of the Leuven Map object from the OSM network
     path = [(track[i][0], track[i][1]) for i in range(len(track))]
-    
+
     map_con = InMemMap("myosm", use_latlon=True, use_rtree=True, index_edges=True)
     nodes_id = list(graph.nodes)
     for node in nodes_id:
         lat = graph.nodes[node]['y']
         lon = graph.nodes[node]['x']
         map_con.add_node(node, (lat, lon))
-    
+
     edges_id = list(graph.edges)
     for edge in edges_id:
         node_a, node_b = edge[0], edge[1]
@@ -93,10 +93,10 @@ def match_leuven(graph, track):
                              dist_noise=50,  # meter
                              non_emitting_states=False)
     states, lastidx = matcher.match(path)
-   
-    
+
+
     proj_dist = np.zeros(len(track))
-    
+
     # States refers to edges id (node1_id, node2_id) where the GPS point is projected
     lat_corr, lon_corr = [], []
     lat_nodes = matcher.lattice_best
@@ -104,10 +104,10 @@ def match_leuven(graph, track):
         lat, lon = m.edge_m.pi[:2]
         lat_corr.append(lat)
         lon_corr.append(lon)
-        
+
         _, _, distance = geod.inv(track[idx][1], track[idx][0], lon, lat)
         proj_dist[idx] += distance
-        
+
     track_corr = np.column_stack((lat_corr, lon_corr))
 
     # Stack the stats
@@ -115,19 +115,19 @@ def match_leuven(graph, track):
     unlinked = []
     # Compute the route coordinates
     route = []
-    
+
     for i in range(len(track) - 1):
         if states[i] != states[i+1]:
             route.append(track_corr[i])
             route.append([map_con.graph[states[i][1]][0][0], map_con.graph[states[i][1]][0][1]])
-            _, _, distance = geod.inv(track_corr[i][1], track_corr[i][0], 
+            _, _, distance = geod.inv(track_corr[i][1], track_corr[i][0],
                                       map_con.graph[states[i][1]][0][1], map_con.graph[states[i][1]][0][0])
             path_length.append(distance)
             unlinked.append(0)
-        
+
         else:
             route.append(track_corr[i])
-            _, _, distance = geod.inv(track_corr[i][1], track_corr[i][0], 
+            _, _, distance = geod.inv(track_corr[i][1], track_corr[i][0],
                                       track_corr[i+1][1], track_corr[i+1][0])
             path_length.append(distance)
             unlinked.append(0)
@@ -135,11 +135,11 @@ def match_leuven(graph, track):
     route.append(track_corr[-1])
     path_length.append(0)
     unlinked.append(0)
-    
+
     stats = pd.DataFrame({"proj_length": proj_dist,
                           "path_length": path_length,
                           "unlinked": unlinked})
-        
+
     return track_corr, np.array(route), states, stats
 
 
@@ -149,43 +149,43 @@ def match_leuven(graph, track):
 if __name__ == "__main__":
     print("\n\t-----------------------\n",
             "\t      Map Matching     \n\n")
-    
-    
+
+
     # Visualize the data
     import matplotlib.pyplot as plt
     from matplotlib import collections as mc   # for plotting
-    
+
 # =============================================================================
 #     1/ Open the track
-# =============================================================================    
+# =============================================================================
     print("1/ Open the track")
     print("\t1.1/ Convert in dataframe")
     filename = 'test\\track(1).geojson'
     with open(filename) as f:
         geojson = json.load(f)
-    
+
     # convert in dataframe
     df = io.geojson_to_df(geojson, extract_coordinates=True)
-        
+
     print("\t1.2/ Clean the track")
     # Fill None values by interpolation
     df = df.interpolate(method='quadratic', axis=0)
     # Delete rows where no positions
     df = df[df['type'].notnull()]
-    
+
 # =============================================================================
 #     2/ Extract the coordinates
 # =============================================================================
     print("2/ Extract the coordinates")
     track = np.column_stack((df['latitude'].values, df['longitude'].values))
-    
+
 # =============================================================================
 #     3/ Plot the graph of the location
 # =============================================================================
     print("3/ plot the graph and the track")
- 
+
     graph = rt.graph_from_track(track, network='all')
-    
+
 
 # =============================================================================
 #     4/ map matching leuven - Viterbi Algorithm
@@ -205,7 +205,7 @@ if __name__ == "__main__":
     except KeyError:
         print(KeyError, 'Error computing the projection accuracy')
     print(st.global_stats(stats_leuven).round(2))
-    
+
     df_leuven = pd.concat([df, stats_leuven], axis=1, join='inner')
     df_leuven['longitude'] = track_leuven[:,1]
     df_leuven['latitude'] = track_leuven[:,0]
@@ -213,19 +213,19 @@ if __name__ == "__main__":
 
     # 5.3/ Visualization leuven - Leuven Map Matching
     print("\t5.3/ Visualization of the map matching")
-    fig, ax = ox.plot_graph(graph, node_color="skyblue", node_alpha=.5, node_size=15, show=False, close=False) 
+    fig, ax = ox.plot_graph(graph, node_color="skyblue", node_alpha=.5, node_size=15, show=False, close=False)
     plt.title("Map Matching with Viterbi's algorithm (leuven)", color="#999999")
-    
+
     plt.scatter(track[:,1], track[:,0], s=30, marker='.', color="black", zorder=2, label='Original Point')
     plt.plot(track[:,1], track[:,0], linewidth=2, alpha=.7, color="black")
     plt.scatter(track_leuven[:,1], track_leuven[:,0], s=30, marker='.', color="darkcyan", zorder=2, label='Projected Point')
     plt.plot(route_leuven[:,1], route_leuven[:,0], linewidth=2, alpha=.7, color="darkcyan")
-    
+
     # projection between the two tracks
     lines = [[(track[i,1], track[i,0]), (track_leuven[i,1], track_leuven[i,0])] for i in range(len(track))]
     lc = mc.LineCollection(lines, linestyle='--', colors='skyblue', alpha=1, linewidths=1, zorder=1, label='Projection')
-    ax.add_collection(lc)  
-    
+    ax.add_collection(lc)
+
     ax.legend(loc=1, frameon=True, facecolor='w')
     # plt.savefig("..\\..\\..\\img\\map_matching_leuven.png", dpi=600)
 
