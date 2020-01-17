@@ -16,7 +16,7 @@ import core.model.stats as sts
 
 def main(files, files_properties=None, out_dirname=".", method="nearest", db_file='database.db', log=True):
     
-    if files_properties is None or len(files) != len(files_properties):
+    if files_properties is not None and len(files) != len(files_properties):
         raise Exception ("Length of files and properties should match.")
 
     # Connecting to the database
@@ -28,8 +28,16 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
         name = file.split("\\")[-1].split(".")
         filename = name[0]
         ext = name[1]
+        
         # Extract the meta.properties informations
-        file_props = files_properties[i]
+        if files_properties is not None:
+            file_props = files_properties[i]
+            df_props = io.properties_to_df(file_props)
+            df_props.insert(loc=0, column='track_id', value=[filename])
+            if i == 0:
+                dbc.create_table_from_df(conn, 'meta', df_props)
+            dbc.df_to_table(conn, 'meta', df_props)
+        
         # Open the geojson
         with open(file) as f:
             geojson = json.load(f)
@@ -40,9 +48,6 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
             print("========================")
             print("track : {0}, track size : {1}".format(filename, len(df)))
         df_corr = nc.correct_track(df)
-
-        df_props = io.properties_to_df(file_props)
-        df_props.insert(loc=0, column='track_id', value=[filename])
 
         if log:
             print("------------------------")
@@ -72,9 +77,8 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
         # Create and add to the database
         if i == 0:
             dbc.create_table_from_df(conn, 'point', df_corr)
-            dbc.create_table_from_df(conn, 'meta', df_props)
         dbc.df_to_table(conn, 'point', df_corr)
-        dbc.df_to_table(conn, 'meta', df_props)
+
 
     # closing the database
     conn.close()
@@ -88,16 +92,16 @@ if __name__ == "__main__":
 # =============================================================================
     print("1/ Reading the files")
     files = io.open_files("../data/track")
-    print(files)
+    print(files[:10])
     
     files_properties = io.open_files("../data/track", ext="properties")
-    print(files_properties)
+    print(files_properties[:10])
     
 # =============================================================================
 #     2/ Map matching
 # =============================================================================
     print("2/ Map Matching")
-    main(files, files_properties=files_properties, out_dirname='../data', method='hmm', db_file='../database/database_hmm2.db', log=True)
+    main(files, files_properties=files_properties, out_dirname='../data', method='hmm', db_file='../database/database_hmm_new.db', log=True)
 
 
 
