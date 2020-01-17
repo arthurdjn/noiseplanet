@@ -17,7 +17,6 @@ from leuvenmapmatching.matcher.distance import DistanceMatcher   # map matching
 from leuvenmapmatching.map.inmem import InMemMap                 # leuven graph object
 
 # Useful script
-import utils.io as io
 import core.model.mapmatching.route as rt
 import core.model.stats as st
 
@@ -147,13 +146,16 @@ def match_leuven(graph, track):
 
 
 if __name__ == "__main__":
+    # Open tracks
+    import utils.io as io
+    # Visualize the data
+    import matplotlib.pyplot as plt
+    from matplotlib import collections as mc   # for plotting
+    
     print("\n\t-----------------------\n",
             "\t      Map Matching     \n\n")
 
 
-    # Visualize the data
-    import matplotlib.pyplot as plt
-    from matplotlib import collections as mc   # for plotting
 
 # =============================================================================
 #     1/ Open the track
@@ -169,7 +171,11 @@ if __name__ == "__main__":
 
     print("\t1.2/ Clean the track")
     # Fill None values by interpolation
-    df = df.interpolate(method='quadratic', axis=0)
+    try:
+        df = df.interpolate(method='quadratic', axis=0)
+    except ValueError as e:
+        print(e)
+        print("The interpolation failed for {0}".format(filename))
     # Delete rows where no positions
     df = df[df['type'].notnull()]
 

@@ -15,7 +15,6 @@ import pandas as pd
 
 # Useful script
 import core.model.oproj as oproj
-import utils.io as io
 import core.model.mapmatching.route as rt
 import core.model.stats as st
 
@@ -115,12 +114,15 @@ def match_nearest_edge(graph, track):
 
 
 if __name__ == "__main__":
-    print("\n\t-----------------------\n",
-            "\t    Nearest Matching   \n\n")
-
+    # Open tracks
+    import utils.io as io
     # Visualize the data
     import matplotlib.pyplot as plt
     from matplotlib import collections as mc   # for plotting
+
+    
+    print("\n\t-----------------------\n",
+            "\t    Nearest Matching   \n\n")
 
 # =============================================================================
 #     1/ Open the track
@@ -136,7 +138,11 @@ if __name__ == "__main__":
 
     print("\t1.2/ Clean the track")
     # Fill None values by interpolation
-    df = df.interpolate(method='quadratic', axis=0)
+    try:
+        df = df.interpolate(method='quadratic', axis=0)
+    except ValueError as e:
+        print(e)
+        print("The interpolation failed for {0}".format(filename))
     # Delete rows where no positions
     df = df[df['type'].notnull()]
 

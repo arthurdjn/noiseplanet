@@ -61,7 +61,7 @@ def correct_track(df, filename="track", method="hmm"):
         proj_init="epsg:4326"
         proj_out="epsg:3857"
         origin = (0, 0)
-        side_length = 50
+        side_length = 15
                     
         Q, R = hxg.nearest_hexagons(Y, X, side_length=side_length, origin=origin, 
                             proj_init=proj_init, proj_out=proj_out)
