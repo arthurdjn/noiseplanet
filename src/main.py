@@ -16,7 +16,7 @@ import core.model.stats as sts
 
 def main(file, properties=None, out_dirname=".", method="nearest", db_file='database.db', log=True):
 
-    if not properties:
+    if properties is None:
         raise Exception ("Length of files and properties should match.")
 
     # Connecting to the database
