@@ -14,9 +14,9 @@ import dbconnect as dbc
 import core.model.stats as sts
 
 
-def main(file, properties=None, out_dirname=".", method="nearest", db_file='database.db', log=True):
+def main(files, files_properties=None, out_dirname=".", method="nearest", db_file='database.db', log=True):
     
-    if not properties:
+    if files_properties is None or len(files) != len(files_properties):
         raise Exception ("Length of files and properties should match.")
         
     # Connecting to the database
@@ -29,20 +29,17 @@ def main(file, properties=None, out_dirname=".", method="nearest", db_file='data
         filename = name[0]
         ext = name[1]
         # Extract the meta.properties informations
-        file_props = properties[i]
-   
+        file_props = files_properties[i]
         # Open the geojson
         with open(file) as f:
             geojson = json.load(f)
-            
-        if log:
-            print("========================")
-            print("track : {0}, track size : {1}".format(filename, len(geojson)))
-               
+                           
         # Convert in dataframe
         df = io.geojson_to_df(geojson, extract_coordinates=True)
+        if log:
+            print("========================")
+            print("track : {0}, track size : {1}".format(filename, len(df)))
         df_corr = nc.correct_track(df)
-        
         df_props = io.properties_to_df(file_props)
         df_props.insert(loc=0, column='track_id', value=[filename])
         
@@ -66,7 +63,7 @@ def main(file, properties=None, out_dirname=".", method="nearest", db_file='data
         outname = directory + '/' + filename + '_' + method + '.' + ext
         if not os.path.exists(directory):
             os.makedirs(directory)
-            
+        
         # write the geojson
         with open(outname, 'w') as f:
             json.dump(gj, f)
@@ -90,18 +87,16 @@ if __name__ == "__main__":
 # =============================================================================
     print("1/ Reading the files")
     files = io.open_files("../data/track")
-    # files = files[:10]
     print(files)
     
-    properties = io.open_files("../data/track", ext="properties")
-    # files = files[:10]
-    print(properties)
+    files_properties = io.open_files("../data/track", ext="properties")
+    print(files_properties)
     
 # =============================================================================
 #     2/ Map matching
 # =============================================================================
     print("2/ Map Matching")
-    main(files, properties=props, out_dirname='../data', method='hmm', db_file='../database/database_hmm.db', log=True)
+    main(files, files_properties=files_properties, out_dirname='../data', method='hmm', db_file='../database/database_hmm2.db', log=True)
 
 
 

@@ -6,17 +6,17 @@ Created on Fri Oct 18 16:03:37 2019
 """
 
 # Classic Library
-import osmnx as ox                         # OSM
+import osmnx as ox
 import numpy as np
 import json
 import pandas as pd
 
 # Useful script
-import src.utils.io as io
-import src.core.model.stats as st
-import src.core.model.mapmatching.nearest as nearest
-import src.core.model.mapmatching.leuven as leuven
-import src.core.model.mapmatching.route as rt
+import utils.io as io
+import core.model.stats as st
+import core.model.mapmatching.nearest as nearest
+import core.model.mapmatching.leuven as leuven
+import core.model.mapmatching.route as rt
 
 
 def map_matching(graph, lat, lon, method='nearest'):
