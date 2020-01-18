@@ -20,6 +20,7 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
         raise Exception ("Length of files and properties should match.")
 
     # Connecting to the database
+    create_db = True
     conn = dbc.connect(db_file)
 
     for i in range(len(files)):
@@ -82,8 +83,9 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
                 json.dump(gj, f)
     
             # Create and add to the database
-            if i == 0:
+            if create_db:
                 dbc.create_table_from_df(conn, 'point', df_corr)
+                create_db = False
             dbc.df_to_table(conn, 'point', df_corr)
         except Exception as e:
             print(e, "The track {0} has not been corrected and therefore not saved under the database")
@@ -110,7 +112,7 @@ if __name__ == "__main__":
 #     2/ Map matching
 # =============================================================================
     print("2/ Map Matching")
-    main(files, files_properties=files_properties, out_dirname='../data_test', method='hmm', db_file='../database_test/database_hmm.db', log=True)
+    main(files, files_properties=files_properties, out_dirname='../test/data', method='hmm', db_file='../test/database/database_hmm.db', log=True)
 
 
 
