@@ -70,7 +70,8 @@ def correct_track(df, filename="track", method="hmm"):
     df_corr.insert(loc=0, column='track_id', value=[filename]*len(df_corr))
 
     df_corr['edge_id'] = edgesid
-    df_corr['osmid'] = [graph.edges[(edge_id[0], edge_id[1], 0)]['osmid'] for edge_id in df_corr['edge_id'].values]
+    graph_undirected = graph.to_undirected()
+    df_corr['osmid'] = [graph_undirected.edges[(edge_id[0], edge_id[1], 0)]['osmid'] for edge_id in df_corr['edge_id'].values]
                           
 
     return df_corr
@@ -100,7 +101,7 @@ if __name__ == "__main__":
     with open(file) as f:
         geojson = json.load(f)
     df = io.geojson_to_df(geojson, extract_coordinates=True)
-    df_corr = correct_track(df, filename=filename, method="nearest")
+    df_corr = correct_track(df, filename=filename, method="hmm")
 
 
 

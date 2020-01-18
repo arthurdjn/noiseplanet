@@ -166,7 +166,8 @@ if __name__ == "__main__":
 # =============================================================================
     print("1/ Open the track")
     print("\t1.1/ Convert in dataframe")
-    filename = 'test\\track(1).geojson'
+    
+    filename = '../../../../data/track/track_1.geojson'
     with open(filename) as f:
         geojson = json.load(f)
 
@@ -223,7 +224,7 @@ if __name__ == "__main__":
 
     # 5.3/ Visualization leuven - Leuven Map Matching
     print("\t5.3/ Visualization of the map matching")
-    fig, ax = ox.plot_graph(graph, node_color="skyblue", node_alpha=.5, node_size=15, show=False, close=False)
+    fig, ax = ox.plot_graph(graph, node_color="skyblue", node_alpha=.5, node_size=15, show=False, close=False, annotate=True)
     plt.title("Map Matching with Viterbi's algorithm (leuven)", color="#999999")
 
     plt.scatter(track[:,1], track[:,0], s=30, marker='.', color="black", zorder=2, label='Original Point')
@@ -237,7 +238,7 @@ if __name__ == "__main__":
     ax.add_collection(lc)
 
     ax.legend(loc=1, frameon=True, facecolor='w')
-    # plt.savefig("..\\..\\..\\img\\map_matching_leuven.png", dpi=600)
+    # plt.savefig("../../../img/map_matching_leuven.png", dpi=600)
 
 
 
