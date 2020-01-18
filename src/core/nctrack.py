@@ -9,7 +9,6 @@ import numpy as np
 import pandas as pd
 import json
 
-from src.utils import io
 import src.core.model.osmmatching as osmm
 import src.core.model.mapmatching.route as rt
 import src.core.representation.hexgrid as hxg
@@ -20,8 +19,7 @@ def correct_track(df, filename="track", method="hmm"):
     try:
         df = df.interpolate(method='quadratic', axis=0)
     except ValueError as e:
-        print(e)
-        print("The interpolation failed for {0}".format(filename))
+        print("{0} The interpolation failed for {1}".format(e, filename))
     # Delete rows where there are no positions
     df = df[df['type'].notnull()]
     
@@ -42,8 +40,8 @@ def correct_track(df, filename="track", method="hmm"):
     # add statistics and verify that the column 'accuracy' exists
     try:
         stats['proj_accuracy'] = df['accuracy'].values / stats['proj_length']
-    except KeyError as error:
-        print(error, 'Error computing the projection accuracy')
+    except KeyError as e:
+        print('{0} Error computing the projection accuracy'.format(e))
     
     # update the df with the new points
     df_corr = pd.concat([df, stats], axis=1, join='inner')
@@ -74,6 +72,7 @@ if __name__ == "__main__":
     print("\n\t-----------------------\n",
             "\t       Matching\n\n")
     
+    from src.utils import io
 # =============================================================================
 #     1/ Read all the Geojson files
 # =============================================================================

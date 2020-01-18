@@ -12,14 +12,12 @@ import json
 import pandas as pd
 
 # Useful script
-import src.utils.io as io
-import src.core.model.stats as st
 import src.core.model.mapmatching.nearest as nearest
 import src.core.model.mapmatching.leuven as leuven
-import src.core.model.mapmatching.route as rt
 
 
-def map_matching(graph, lat, lon, method='nearest'):
+
+def map_matching(graph, lat, lon, method='hmm'):
 
     track = np.column_stack((lat, lon))
 
@@ -36,6 +34,9 @@ if __name__ == "__main__":
     print("\n\t-----------------------\n",
             "\t      Map Matching     \n\n")
 
+    import src.utils.io as io
+    import src.core.model.stats as st
+    import src.core.model.mapmatching.route as rt
     # Visualize the data
     import matplotlib.pyplot as plt
     from matplotlib import collections as mc   # for plotting

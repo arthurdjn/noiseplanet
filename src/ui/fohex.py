@@ -11,9 +11,6 @@ import folium
 import numpy as np
 import core.representation.hexgrid as hexgrid
 import webbrowser
-from pyproj import Proj, Transformer
-
-
 
 
 def hexgrid_folium(m, bbox, side_length=50000):

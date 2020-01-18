@@ -129,7 +129,7 @@ if __name__ == "__main__":
 # =============================================================================
     print("1/ Open the track")
     print("\t1.1/ Convert in dataframe")
-    filename = 'test\\track(12).geojson'
+    filename = 'test\\track_105.geojson'
     with open(filename) as f:
         geojson = json.load(f)
 

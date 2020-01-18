@@ -12,8 +12,9 @@ import webbrowser
 import folium
 import numpy as np
 
-from src.utils import io
-from src.model import mapmatching as mm
+import src.utils.io as io
+import src.core.model.mapmatching.route as rt
+
 
 def linesProjection(track, track_corr):
     lines = []
@@ -133,9 +134,12 @@ def plot_html(track, track_corr=[],
 
     if show_graph or graph is not None:
         if graph is None:
-            graph = mm.graph_from_track(track, network='all')
+            graph = rt.graph_from_track(track, network='drive')
         my_map = ox.plot_graph_folium(graph, popup_attribute='name', edge_width=1, edge_color='darkgrey')
 
+        
+        
+        
     if proj:
         for i in range(len(track)):
             folium.PolyLine([(track[i][0], track[i][1]), (track_corr[i][0], track_corr[i][1])],
@@ -232,9 +236,9 @@ if __name__ == "__main__":
 
     trackname = 'track(101)'
 
-    file_name_raw = '..\\..\\data\\track\\' + trackname + '.geojson'
-    file_name_nearest = '..\\..\\data\\track_nearest\\' + trackname + '_nearest.geojson'
-    file_name_hmm = '..\\..\\data\\track_hmm\\' + trackname + '_hmm.geojson'
+    file_name_raw = '../../data/track/' + trackname + '.geojson'
+    file_name_nearest = '../../data/track_nearest/' + trackname + '_nearest.geojson'
+    file_name_hmm = '../../data/track_hmm/' + trackname + '_hmm.geojson'
 
     with open(file_name_raw) as f:
         geojson_raw = json.load(f)
@@ -265,10 +269,10 @@ if __name__ == "__main__":
     # track length
     print("\tTrack length :", len(track_raw))
 
-    graph = mm.graph_from_track(track_raw)
+    graph = rt.graph_from_track(track_raw)
 
-    route_nearest, statesid_nearest, stats_nearest = mm.get_route_from_track(graph, track_nearest)
-    route_hmm, statesid_hmm, stats_hmm = mm.get_route_from_track(graph, track_hmm)
+    route_nearest, statesid_nearest, stats_nearest = rt.get_route_from_track(graph, track_nearest)
+    route_hmm, statesid_hmm, stats_hmm = rt.get_route_from_track(graph, track_hmm)
 
     # plot
     plot_html(track_raw, track_corr=track_nearest, route_corr=route_nearest,

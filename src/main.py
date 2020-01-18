@@ -35,7 +35,7 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
             file_props = files_properties[i]
             df_props = io.properties_to_df(file_props)
             df_props.insert(loc=0, column='track_id', value=[filename])
-            if i == 0:
+            if create_db:
                 dbc.create_table_from_df(conn, 'meta', df_props)
             dbc.df_to_table(conn, 'meta', df_props)
         
@@ -88,7 +88,7 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
                 create_db = False
             dbc.df_to_table(conn, 'point', df_corr)
         except Exception as e:
-            print(e, "The track {0} has not been corrected and therefore not saved under the database")
+            print(e, "The track {0} has not been corrected and therefore not saved under the database".format(filename))
 
 
     # closing the database
@@ -105,14 +105,18 @@ if __name__ == "__main__":
     files = io.open_files("../data/track")
     print(files[:10])
     
+    files = files[7:10]
+    
     files_properties = io.open_files("../data/track", ext="properties")
     print(files_properties[:10])
+    files_properties = files_properties[7:10]
+    
     
 # =============================================================================
 #     2/ Map matching
 # =============================================================================
     print("2/ Map Matching")
-    main(files, files_properties=files_properties, out_dirname='../test/data', method='hmm', db_file='../test/database/database_hmm.db', log=True)
+    main(files, files_properties=None, out_dirname='../data', method='nearest', db_file='../database/database_nearest2.db', log=True)
 
 
 
