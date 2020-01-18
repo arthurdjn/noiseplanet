@@ -34,8 +34,10 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
         if files_properties is not None:
             file_props = files_properties[i]
             df_props = io.properties_to_df(file_props)
+            if "pleasantness" not in df_props:
+                df_props.insert(loc=3, column="pleasantness", value=None)
             df_props.insert(loc=0, column='track_id', value=[filename])
-            if i == 0:
+            if create_db:
                 dbc.create_table_from_df(conn, 'meta', df_props)
             dbc.df_to_table(conn, 'meta', df_props)
         
