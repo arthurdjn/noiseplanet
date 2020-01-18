@@ -61,6 +61,12 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
         properties.remove('longitude')
         properties.remove('latitude')
         properties.remove('elevation')
+        
+        properties.remove('edge_id')
+        properties.remove('track_id')
+        properties.remove('point_idx')
+
+        
         gj = io.df_to_geojson(df_corr, properties, geometry_type='type',
                               lat='latitude', lon='longitude', z='elevation')
 
@@ -101,7 +107,7 @@ if __name__ == "__main__":
 #     2/ Map matching
 # =============================================================================
     print("2/ Map Matching")
-    main(files, files_properties=files_properties, out_dirname='../data', method='hmm', db_file='../database/database_hmm_new.db', log=True)
+    main(files, files_properties=files_properties, out_dirname='../data_test', method='hmm', db_file='../database/database_nearest.db', log=True)
 
 
 
