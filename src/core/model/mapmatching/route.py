@@ -159,7 +159,7 @@ def get_route_from_track(graph, track, states=[]):
     stats = pd.DataFrame({"path_length": np.array(path_length), 
                           "unlinked": np.array(unlinked)})
     
-    return np.array(route), states, stats
+    return np.array(route), list(zip(states[:,0], states[:,1])), stats
 
 
 

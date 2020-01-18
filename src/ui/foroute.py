@@ -12,8 +12,8 @@ import webbrowser
 import folium
 import numpy as np
 
-from utils import io
-from model import mapmatching as mm
+from src.utils import io
+from src.model import mapmatching as mm
 
 def linesProjection(track, track_corr):
     lines = []

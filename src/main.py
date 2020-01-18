@@ -8,10 +8,10 @@ Created on Thu Dec  5 22:16:26 2019
 import os
 import json
 
-from utils import io
-import core.nctrack as nc
-import dbconnect as dbc
-import core.model.stats as sts
+from src.utils import io
+import src.core.nctrack as nc
+import src.dbconnect as dbc
+import src.core.model.stats as sts
 
 
 def main(files, files_properties=None, out_dirname=".", method="nearest", db_file='database.db', log=True):
@@ -47,7 +47,7 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
         if log:
             print("========================")
             print("track : {0}, track size : {1}".format(filename, len(df)))
-        df_corr = nc.correct_track(df)
+        df_corr = nc.correct_track(df, filename=filename, method=method)
 
         if log:
             print("------------------------")

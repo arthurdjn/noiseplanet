@@ -14,9 +14,9 @@ import pandas as pd
 
 
 # Useful script
-import core.model.oproj as oproj
-import core.model.mapmatching.route as rt
-import core.model.stats as st
+import src.core.model.oproj as oproj
+import src.core.model.mapmatching.route as rt
+import src.core.model.stats as st
 
 
 
@@ -109,13 +109,13 @@ def match_nearest_edge(graph, track):
     route, _, stats_route = rt.get_route_from_track(graph, track_corr)
     stats = pd.DataFrame(dict({"proj_length": proj_dist}, **stats_route))
 
-    return track_corr, route, states, stats
+    return track_corr, route, list(zip(states[:,0], states[:,1])), stats
 
 
 
 if __name__ == "__main__":
     # Open tracks
-    import utils.io as io
+    import src.utils.io as io
     # Visualize the data
     import matplotlib.pyplot as plt
     from matplotlib import collections as mc   # for plotting

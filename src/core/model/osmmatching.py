@@ -12,11 +12,11 @@ import json
 import pandas as pd
 
 # Useful script
-import utils.io as io
-import core.model.stats as st
-import core.model.mapmatching.nearest as nearest
-import core.model.mapmatching.leuven as leuven
-import core.model.mapmatching.route as rt
+import src.utils.io as io
+import src.core.model.stats as st
+import src.core.model.mapmatching.nearest as nearest
+import src.core.model.mapmatching.leuven as leuven
+import src.core.model.mapmatching.route as rt
 
 
 def map_matching(graph, lat, lon, method='nearest'):
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     print("4/ Algorithm to match the track to closest edge")
     # 4.1/ Compute the path
     print("\t4.1/ Compute the route to the closest edge")
-    track_nearest, route_nearest, statesid_nearest, stats_nearest = map_matching(graph, Y, X, method='nearest')
+    track_nearest, route_nearest, statesid_nearest, stats_nearest = map_matching(graph, Y, X, method='hmm')
 
     # 4.2/ Set the stats
     print("\t4.2/ Let's update the dataframe with the statistics")

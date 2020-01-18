@@ -17,8 +17,8 @@ from leuvenmapmatching.matcher.distance import DistanceMatcher   # map matching
 from leuvenmapmatching.map.inmem import InMemMap                 # leuven graph object
 
 # Useful script
-import core.model.mapmatching.route as rt
-import core.model.stats as st
+import route as rt
+import src.core.model.stats as st
 
 
 def match_leuven(graph, track):
@@ -109,36 +109,40 @@ def match_leuven(graph, track):
 
     track_corr = np.column_stack((lat_corr, lon_corr))
 
-    # Stack the stats
-    path_length = []
-    unlinked = []
-    # Compute the route coordinates
-    route = []
+    # # Stack the stats
+    # path_length = []
+    # unlinked = []
+    # # Compute the route coordinates
+    # route = []
 
-    for i in range(len(track) - 1):
-        if states[i] != states[i+1]:
-            route.append(track_corr[i])
-            route.append([map_con.graph[states[i][1]][0][0], map_con.graph[states[i][1]][0][1]])
-            _, _, distance = geod.inv(track_corr[i][1], track_corr[i][0],
-                                      map_con.graph[states[i][1]][0][1], map_con.graph[states[i][1]][0][0])
-            path_length.append(distance)
-            unlinked.append(0)
+    # for i in range(len(track) - 1):
+    #     if states[i] != states[i+1]:
+    #         route.append(track_corr[i])
+    #         route.append([map_con.graph[states[i][1]][0][0], map_con.graph[states[i][1]][0][1]])
+    #         _, _, distance = geod.inv(track_corr[i][1], track_corr[i][0],
+    #                                   map_con.graph[states[i][1]][0][1], map_con.graph[states[i][1]][0][0])
+    #         path_length.append(distance)
+    #         unlinked.append(0)
 
-        else:
-            route.append(track_corr[i])
-            _, _, distance = geod.inv(track_corr[i][1], track_corr[i][0],
-                                      track_corr[i+1][1], track_corr[i+1][0])
-            path_length.append(distance)
-            unlinked.append(0)
-    # Let's not forget the last point
-    route.append(track_corr[-1])
-    path_length.append(0)
-    unlinked.append(0)
+    #     else:
+    #         route.append(track_corr[i])
+    #         _, _, distance = geod.inv(track_corr[i][1], track_corr[i][0],
+    #                                   track_corr[i+1][1], track_corr[i+1][0])
+    #         path_length.append(distance)
+    #         unlinked.append(0)
+    # # Let's not forget the last point
+    # route.append(track_corr[-1])
+    # path_length.append(0)
+    # unlinked.append(0)
+    
+    
+    # stats = pd.DataFrame({"proj_length": proj_dist,
+    #                       "path_length": path_length,
+    #                       "unlinked": unlinked})
 
-    stats = pd.DataFrame({"proj_length": proj_dist,
-                          "path_length": path_length,
-                          "unlinked": unlinked})
-
+    route, _, stats_route = rt.get_route_from_track(graph, track_corr)
+    stats = pd.DataFrame(dict({"proj_length": proj_dist}, **stats_route))
+    
     return track_corr, np.array(route), states, stats
 
 
@@ -147,7 +151,7 @@ def match_leuven(graph, track):
 
 if __name__ == "__main__":
     # Open tracks
-    import utils.io as io
+    import src.utils.io as io
     # Visualize the data
     import matplotlib.pyplot as plt
     from matplotlib import collections as mc   # for plotting
@@ -208,8 +212,8 @@ if __name__ == "__main__":
     stats_leuven = stats_leuven.set_index(df.index.values)
     try:
         stats_leuven['proj_accuracy'] = df['accuracy'].values / stats_leuven['proj_length']
-    except KeyError:
-        print(KeyError, 'Error computing the projection accuracy')
+    except KeyError as e:
+        print(e, 'Error computing the projection accuracy')
     print(st.global_stats(stats_leuven).round(2))
 
     df_leuven = pd.concat([df, stats_leuven], axis=1, join='inner')
