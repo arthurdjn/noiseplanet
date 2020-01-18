@@ -47,43 +47,46 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
         if log:
             print("========================")
             print("track : {0}, track size : {1}".format(filename, len(df)))
-        df_corr = nc.correct_track(df, filename=filename, method=method)
-
-        if log:
-            print("------------------------")
-            print("stats {0}".format(method))
-            print(sts.global_stats(df_corr[['proj_length', 'path_length', 'unlinked', 'proj_accuracy']]).round(3))
-
-
-        # Convert back to geojson
-        properties = [key for key in df_corr]
-        properties.remove('type')
-        properties.remove('longitude')
-        properties.remove('latitude')
-        properties.remove('elevation')
-        
-        properties.remove('edge_id')
-        properties.remove('track_id')
-        properties.remove('point_idx')
-
-        
-        gj = io.df_to_geojson(df_corr, properties, geometry_type='type',
-                              lat='latitude', lon='longitude', z='elevation')
-
-        # test if the out directory exists
-        directory = out_dirname + '/track_' + method
-        outname = directory + '/' + filename + '_' + method + '.' + ext
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-
-        # write the geojson
-        with open(outname, 'w') as f:
-            json.dump(gj, f)
-
-        # Create and add to the database
-        if i == 0:
-            dbc.create_table_from_df(conn, 'point', df_corr)
-        dbc.df_to_table(conn, 'point', df_corr)
+        try:
+            df_corr = nc.correct_track(df, filename=filename, method=method)
+    
+            if log:
+                print("------------------------")
+                print("stats {0}".format(method))
+                print(sts.global_stats(df_corr[['proj_length', 'path_length', 'unlinked', 'proj_accuracy']]).round(3))
+    
+    
+            # Convert back to geojson
+            properties = [key for key in df_corr]
+            properties.remove('type')
+            properties.remove('longitude')
+            properties.remove('latitude')
+            properties.remove('elevation')
+            
+            properties.remove('edge_id')
+            properties.remove('track_id')
+            properties.remove('point_idx')
+    
+            
+            gj = io.df_to_geojson(df_corr, properties, geometry_type='type',
+                                  lat='latitude', lon='longitude', z='elevation')
+    
+            # test if the out directory exists
+            directory = out_dirname + '/track_' + method
+            outname = directory + '/' + filename + '_' + method + '.' + ext
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+    
+            # write the geojson
+            with open(outname, 'w') as f:
+                json.dump(gj, f)
+    
+            # Create and add to the database
+            if i == 0:
+                dbc.create_table_from_df(conn, 'point', df_corr)
+            dbc.df_to_table(conn, 'point', df_corr)
+        except Exception as e:
+            print(e, "The track {0} has not been corrected and therefore not saved under the database")
 
 
     # closing the database
