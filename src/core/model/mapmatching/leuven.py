@@ -17,7 +17,7 @@ from leuvenmapmatching.matcher.distance import DistanceMatcher   # map matching
 from leuvenmapmatching.map.inmem import InMemMap                 # leuven graph object
 
 # Useful script
-import route as rt
+import src.core.model.mapmatching.route as rt
 import src.core.model.stats as st
 
 
