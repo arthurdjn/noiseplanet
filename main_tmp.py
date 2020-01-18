@@ -116,7 +116,8 @@ if __name__ == "__main__":
     else:
         method = 'hmm'
     dbfile = 'test/database/database_'+method+'.db'
+    print(dbfile)
     
     print("2/ Method : ", method)
-    main(files, files_properties=files_properties, out_dirname='test/data', method=method, db_file=dbfile, log=True)
+    main(files, files_properties=files_properties, out_dirname='../test/data', method=method, db_file=dbfile, log=True)
 
