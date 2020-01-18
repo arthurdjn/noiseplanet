@@ -110,7 +110,7 @@ if __name__ == "__main__":
 #     2/ Map matching
 # =============================================================================
     print("2/ Map Matching")
-    main(files, files_properties=files_properties, out_dirname='../data_test', method='hmm', db_file='../database_test/database_nearest.db', log=True)
+    main(files, files_properties=files_properties, out_dirname='../data_test', method='hmm', db_file='../database_test/database_hmm.db', log=True)
 
 
 
