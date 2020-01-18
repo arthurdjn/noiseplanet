@@ -26,7 +26,7 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
     for i in range(len(files)):
         # Extract the track informations
         file = files[i]
-        name = file.split("\\")[-1].split(".")
+        name = file.split("/")[-1].split(".")
         filename = name[0]
         ext = name[1]
         
