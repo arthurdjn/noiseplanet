@@ -24,3 +24,6 @@ origin = (0, 0)
 side_length = 15
 
 io.generate_hexs(Q, R, origin, side_length, out_dirpath="data")
+
+
+

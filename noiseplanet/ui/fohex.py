@@ -10,6 +10,8 @@ import folium
 import numpy as np
 import webbrowser
 
+import json
+
 from noiseplanet.utils import hexgrid
 
 
@@ -21,24 +23,27 @@ def hexgrid_folium(m, bbox, side_length=50000):
     grid = hexgrid.hexbin_grid(bbox, side_length=side_length, proj_init=proj_init, proj_out=proj_out)
 
     # ... and reproject each hexagonal in the geographic system
+    # save in local the geojson
+    features = []
+    
     for hexagon in grid:
-        geo_json = {"type": "FeatureCollection",
+        feature = { "type":"Feature",
+                    "geometry":{
+                            "type":"Polygon",
+                            "coordinates": [hexagon]
+                            }
+                    }
+        features.append(feature)
+        geojson = {"type": "FeatureCollection",
                     "properties":{
                             "lower_left": (bbox[0], bbox[1]),
                             "upper_right": (bbox[2], bbox[3])
                             },
-                    "features": [{
-                            "type":"Feature",
-                            "geometry":{
-                                    "type":"Polygon",
-                                    "coordinates": [hexagon]
-                                    }
-                            }]
+                    "features": [feature]
                     }
 
-
         color = 'skyblue'
-        gj = folium.GeoJson(geo_json,
+        gj = folium.GeoJson(geojson,
                             style_function=lambda feature,
                             color=color: {
                                           'fillColor': color,
@@ -65,8 +70,24 @@ def hexgrid_folium(m, bbox, side_length=50000):
                     fill_opacity=1).add_to(m)
 
 
-    m.save("my_hexbin_map.html")
-    webbrowser.open("my_hexbin_map.html", new=2)  # open in new tab
+    m.save("my_hexbin_map2.html")
+    webbrowser.open("my_hexbin_map2.html", new=2)  # open in new tab
+
+    geojsons = {"type": "FeatureCollection",
+                "properties":{
+                        "lower_left": (bbox[0], bbox[1]),
+                        "upper_right": (bbox[2], bbox[3])
+                        },
+                "features": features 
+                }
+
+    # Write the geojson
+    outname = 'hex2' + '.geojson'
+
+    with open(outname, 'w') as f:
+        json.dump(geojsons, f)
+
+
 
     return m
 
@@ -114,10 +135,10 @@ if __name__ == "__main__":
     # 1/ Create a grid
     m = folium.Map(zoom_start = 5, location=[55, 0])
 
-    lower_left = [48.85341, 2.3488]
-    upper_right = [58.85341, 5.3488]
+    lower_left = [45.75, 4.85]
+    upper_right = [45.76, 4.86]
     bbox = (lower_left[1], lower_left[0], upper_right[1], upper_right[0])
-    hexgrid_folium(m, bbox, side_length=10000)
+    hexgrid_folium(m, bbox, side_length=15)
 
 
     proj_init="epsg:4326"

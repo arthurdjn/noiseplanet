@@ -86,7 +86,14 @@ def select_to_df(conn, query):
     # Convert back a stringed tuple to a tuple
     for key in df:
         if type(df[key][0]) == str and '(' in df[key][0] and ',' in df[key][0] and ')' in df[key][0]:
-            df[key] = [literal_eval(x) for x in df[key]]
+            evaluated_col = []
+            for x in df[key]:
+                if x is None:
+                    evaluated_col.append(None)
+                else:
+                    evaluated_col.append(literal_eval(x))
+            df[key] = evaluated_col
+            # df[key] = [literal_eval(x) for x in df[key]]
     
     return df
 
