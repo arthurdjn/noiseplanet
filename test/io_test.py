@@ -12,7 +12,7 @@ import noiseplanet as npt
 import noiseplanet.io.inputoutput as io
 
 
-conn = npt.db.connect("../database/database_hmm2.db")
+conn = npt.db.connect("database/database_hmm.db")
 
 query = "SELECT hex_id FROM point"
 df = npt.db.select_to_df(conn, query)

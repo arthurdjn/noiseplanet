@@ -27,12 +27,12 @@ def generate_hex(Q, R, origin, side_length, out_dirpath="."):
         os.makedirs(directory)
     
     for i, hexagon in enumerate(hexagons): 
-        id = str(Q[i]) + 'x' + str(R[i])
+        id = str(int(Q[i])) + 'x' + str(int(R[i]))
         properties = {'id': id}
         gj = utils.poly_to_geojson(hexagons, properties)
 
         # write the geojson
-        outname = out_dirpath + '/' + 'hex_' + id + '.geojson'
+        outname = directory + '/' + 'hex_' + id + '.geojson'
         with open(outname, 'w') as f:
             json.dump(gj, f)
     
