@@ -9,11 +9,12 @@ import os
 import json
 
 
-import noiseplanet.utils.io as io
+import noiseplanet.utils as utils
+import noiseplanet.io as io
 import noiseplanet.db as db
 
-import noiseplanet.matching as mm
-import noiseplanet.matching.model.stats as sts
+from noiseplanet import matching
+from noiseplanet.matching import stats as sts
 
     
     
@@ -37,7 +38,7 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
         # Extract the meta.properties informations
         if files_properties is not None:
             file_props = files_properties[i]
-            df_props = io.properties_to_df(file_props)
+            df_props = utils.properties_to_df(file_props)
             df_props.insert(loc=0, column='track_id', value=[filename])
             if create_db:
                 db.create_table_from_df(conn, 'meta', df_props)
@@ -48,12 +49,12 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
             geojson = json.load(f)
                            
         # Convert in dataframe
-        df = io.geojson_to_df(geojson, extract_coordinates=True)
+        df = utils.geojson_to_df(geojson, extract_coordinates=True)
         if log:
             print("========================")
             print("track : {0}, track size : {1}".format(filename, len(df)))
         try:
-            df_corr = mm.correct_track(df, filename=filename, method=method)
+            df_corr = matching.correct_track(df, filename=filename, method=method)
     
             if log:
                 print("------------------------")
@@ -67,13 +68,12 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
             properties.remove('longitude')
             properties.remove('latitude')
             properties.remove('elevation')
-            
+            # remove useless attributes
             properties.remove('edge_id')
             properties.remove('track_id')
             properties.remove('point_idx')
     
-            
-            gj = io.df_to_geojson(df_corr, properties, geometry_type='type',
+            gj = utils.df_to_geojson(df_corr, properties, geometry_type='type',
                                   lat='latitude', lon='longitude', z='elevation')
     
             # test if the out directory exists
@@ -92,7 +92,7 @@ def main(files, files_properties=None, out_dirname=".", method="nearest", db_fil
                 create_db = False
             db.df_to_table(conn, 'point', df_corr)
         except Exception as e:
-            print(e, "The track {0} has not been corrected and therefore not saved under the database".format(filename))
+            print(e, "The track {0} has not been corrected and therefore not saved in the database".format(filename))
 
 
     # closing the database

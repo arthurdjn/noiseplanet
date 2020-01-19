@@ -7,14 +7,13 @@ Created on Sun Jan 19 12:52:18 2020
 
 
 import pandas as pd
-import noiseplanet as npt
-
+from noiseplanet import db
 
 
 
 def connect_test():
 
-    conn = npt.db.connect("database/data.db")
+    conn = db.connect("database/data.db")
     
     sql_create_point_table = """ CREATE TABLE IF NOT EXISTS point (
                                         id integer PRIMARY KEY,
@@ -29,7 +28,7 @@ def connect_test():
                                         accuracy REAL,
                                         location_utc REAL
                                     ); """
-    npt.db.create_table(conn, sql_create_point_table)
+    db.create_table(conn, sql_create_point_table)
     
     df = pd.DataFrame({
                        'type': ['Point', 'Point'],
@@ -41,11 +40,11 @@ def connect_test():
                        'accuracy': [6.0, 12.0],
                        'location_utc': [(19489489, 1515), (1494, 15615)]})
     
-    npt.db.df_to_table(conn, 'point', df)
-    npt.db.create_table_from_df(conn, 'geometry', df)
+    db.df_to_table(conn, 'point', df)
+    db.create_table_from_df(conn, 'geometry', df)
     
     query = "SELECT * FROM point"
-    selection = npt.db.select_to_df(conn, query)
+    selection = db.select_to_df(conn, query)
     print("\n" + query)
     print(selection.head())
 

@@ -10,7 +10,7 @@ import folium
 import numpy as np
 import webbrowser
 
-import noiseplanet.core.tiles.hexgrid as hexgrid
+from noiseplanet.utils import hexgrid
 
 
 def hexgrid_folium(m, bbox, side_length=50000):

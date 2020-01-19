@@ -63,7 +63,7 @@ def graph_from_track(track, network='all'):
 
 
 
-def get_route_from_track(graph, track, states=[]):
+def route_from_track(graph, track, states=None):
     """
         Get the route of the corrected track
         
@@ -86,8 +86,8 @@ def get_route_from_track(graph, track, states=[]):
     geod = Geod(ellps='WGS84')
     
     # Find closest edges for each points
-    if len(states) == 0:
-        states = np.array(ox.get_nearest_edges(graph, track[:,1], track[:,0],  method="balltree", dist=0.00001))
+    if states is None:
+        states = np.array(ox.get_nearest_edges(graph, track[:, 1], track[:, 0],  method="balltree", dist=0.00001))
     states = np.array(states)
     
     # Deep copy of the graph, so the original is not modified

@@ -7,17 +7,15 @@ Created on Sat Jan 18 22:26:12 2020
 
 # Classic Library
 import numpy as np
-import json
 import pandas as pd
 
 # Useful package
-import noiseplanet.matching.model as model
-import noiseplanet.matching.tiles as tiles
+from noiseplanet.matching import model
+from noiseplanet.matching.datacleaner import clean_data
+from noiseplanet.utils import hexgrid
 
 
-def map_matching(graph, lat, lon, method='hmm'):
-
-    track = np.column_stack((lat, lon))
+def match(graph, track, method='hmm'):
 
     if method == 'nearest':
         track_coor, route_corr, edgeid, stats = model.match_nearest_edge(graph, track)
@@ -27,25 +25,19 @@ def map_matching(graph, lat, lon, method='hmm'):
 
 
 def correct_track(df, filename="track", method="hmm"):    
-    # Fill None values by interpolation
-    try:
-        df = df.interpolate(method='quadratic', axis=0)
-    except ValueError as e:
-        print("{0} The interpolation failed for {1}".format(e, filename))
-    # Delete rows where there are no positions
-    df = df[df['type'].notnull()]
-    
+    df = clean_data(df)
     # Get lat lon
     track = np.column_stack((df['latitude'].values, df['longitude'].values))
     X = df['longitude'].values
     Y = df['latitude'].values
+    track = np.column_stack((Y, X))
     
     # generate the OSM network
     graph = model.graph_from_track(track, network='all')
                  
     # the leuven library throw exception when points are too far from edges etc.
     # compute the projection
-    track_corr, route_corr, edge_id, stats = map_matching(graph, Y, X, method=method)
+    track_corr, route_corr, edge_id, stats = match(graph, track, method=method)
     
     # index the stats as the df
     stats = stats.set_index(df.index.values)
@@ -65,7 +57,7 @@ def correct_track(df, filename="track", method="hmm"):
     origin = (0, 0)
     side_length = 15
                 
-    Q, R = tiles.nearest_hexagons(Y, X, side_length=side_length, origin=origin, 
+    Q, R = hexgrid.nearest_hexagons(Y, X, side_length=side_length, origin=origin, 
                         proj_init=proj_init, proj_out=proj_out)
     df_corr['hex_id'] = list(zip(Q, R))
     # add to the database
@@ -82,35 +74,9 @@ def correct_track(df, filename="track", method="hmm"):
 
 
 
-if __name__ == "__main__":
-    print("\n\t-----------------------\n",
-            "\t      Map Matching     \n\n")
-    
-    from noiseplanet.utils import io
-# =============================================================================
-#     1/ Read all the Geojson files
-# =============================================================================
-    print("1/ Reading the files")
-    files = io.open_files("../../data/track")
-    print(files[:10])
 
-    name = files[0].split("\\")[-1].split(".")
-    filename = name[0]
-    print(filename)
 
-# =============================================================================
-#   2/ Convert track
-# =============================================================================
-    print("2/ Correct track")
-    with open(files[0]) as f:
-        geojson = json.load(f)
-    df = io.geojson_to_df(geojson, extract_coordinates=True)
-    df_corr2 = correct_track(df, filename=filename, method="nearest")
-    
-    
-    
-    
-    
-    
+
+
     
     
