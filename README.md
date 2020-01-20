@@ -7,4 +7,4 @@ Made in collaboration with the École Nationale des Sciences Géographiques.
 
 ### Overview
 
-**noiseplanet** is a Python package that let you extract, correct, and plot geojson data on Leaflet maps.
+**noiseplanet** is a Python package that let you extract, correct, and plot geojson data on Leaflet maps. This module use the package **leuvenmapmatching**, *KU Leuven - DTAI Research Group, Sirris - Elucidata Group*.
