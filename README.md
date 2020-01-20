@@ -1,8 +1,8 @@
 # noiseplanet
 #### Python for map matching and mapping geojson tracks
 
-This library is a project within the research center UMR-AE/CNRS, working on NoisePlanet for noise mapping.
-Made in collaboration with the École Nationale des Sciences Géographiques.
+This library is a project within the research center *UMR-AE/CNRS*, working on NoisePlanet for noise mapping.
+Made in collaboration with the *École Nationale des Sciences Géographiques*.
 
 **Citation :** Dujardin, A., Mermet, S.(2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
 
@@ -29,7 +29,22 @@ If this doesn't work, clone the repository, and in the *noiseplanet* folder, use
 pip install .
 ```
 
+#### Optional dependencies
+For plotting and interface, the following packages are used :
+- **matplotlib**
+- **folium**
+Note that these packages are optional if you don't want to visualize the resulting maps.
+
+
 #### Development
+
+If you want to participate to the improvement of this project, clone the repository and open it as a project. We used *spyder* to create the packages and modules.
+
+#### Structure
+
 
 
 ### Usage
+
+This project was created to provide new ways of mapping for the *UMR-AE/CNRS* team.
+
