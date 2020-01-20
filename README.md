@@ -45,7 +45,7 @@ If you want to participate to the improvement of this project, clone the reposit
 
 #### Structure
 
-*noiseplanet* is composed by internal sub-packages.
+*noiseplanet* is composed by internal sub-packages:
 - **matching** let you correct tracks and match it to the *Open Street Map* network,
 - **utils** mainly handles conversion from geojson, metadata etc. to *DataFrame*,
 - **ui** is used to generate *Leaflet* maps,
