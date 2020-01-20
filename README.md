@@ -58,6 +58,10 @@ This project was created to provide new ways of mapping for the *UMR-AE/CNRS* te
 
 ### Map Matching
 
+The **noiseplanet** package provides different tools for matching a track to the *Open Street Map* network.
+- matching to the **nearest** edge,
+- **hmm** based matching.
+
 ![Map Matching in Lyon](img/track_hmm.png)
 
 ## Maps
