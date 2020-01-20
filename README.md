@@ -54,5 +54,14 @@ If you want to participate to the improvement of this project, clone the reposit
 
 ## Usage
 
-This project was created to provide new ways of mapping for the *UMR-AE/CNRS* team.
+This project was created to provide new ways of mapping for the *UMR-AE/CNRS* team. 
 
+### Map Matching
+
+![Map Matching in Lyon](img/track_hmm.png)
+
+## Maps
+
+### Hexgrid
+
+### Route
