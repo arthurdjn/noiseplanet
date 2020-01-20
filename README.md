@@ -61,7 +61,24 @@ This project was created to provide new ways of mapping for the *UMR-AE/CNRS* te
 The **noiseplanet** package provides different tools for matching a track to the *Open Street Map* network.
 - matching to the **nearest** edge,
 - **hmm** based matching.
+To match a track, composed by latitudes and longitudes, use :
+```python
+import numpy as np
+from noiseplanet import matching
 
+track = np.array([[45.7584882 ,  4.83585996],
+                  [45.75848068,  4.83586747],
+                  [45.75849549,  4.83585205],
+                  [45.75849134,  4.83584647],
+                  [45.75848135,  4.8358245 ],
+                  [45.75846756,  4.83580848],
+                  [45.75846756,  4.83580848],
+                  [45.75844998,  4.83580936],
+                  [45.7584067 ,  4.83580086],
+                  [45.7584067 ,  4.83580086],
+                  [45.75839346,  4.83579883]])
+
+```
 ![Map Matching in Lyon](img/track_hmm.png)
 
 ## Maps
