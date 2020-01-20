@@ -13,6 +13,10 @@ Made in collaboration with the École Nationale des Sciences Géographiques.
 ### Installing
 #### Dependencies
 This module use the several packages :
+- **numpy**
+- **pandas**
+- **json**
+- **osmnx**
 - **leuvenmapmatching**, *KU Leuven - DTAI Research Group, Sirris - Elucidata Group*.
 
 
