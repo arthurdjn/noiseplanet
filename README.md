@@ -14,10 +14,10 @@ Made in collaboration with the *École Nationale des Sciences Géographiques*.
 ### Installing
 #### Dependencies
 This module use several packages :
-- **numpy**
-- **pandas**
-- **json**
-- **osmnx**
+- **numpy**,
+- **pandas**,
+- **json**,
+- **osmnx**,
 - **leuvenmapmatching**, *KU Leuven - DTAI Research Group, Sirris - Elucidata Group*.
 
 To install, use :
@@ -30,10 +30,13 @@ pip install .
 ```
 
 #### Optional dependencies
+
 For plotting and interface, the following packages are used :
-- **matplotlib**
-- **folium**
-Note that these packages are optional if you don't want to visualize the resulting maps.
+- **matplotlib**,
+- **folium**,
+- **sqlite3**.
+
+Note that these packages are optional if you don't want to visualize the resulting maps. *SQLite3* is used to stock all the informations of a geojson tracks or polygon into an SQL database.
 
 
 #### Development
@@ -42,7 +45,12 @@ If you want to participate to the improvement of this project, clone the reposit
 
 #### Structure
 
-
+*noiseplanet* is composed by internal sub-packages.
+- **matching** let you correct tracks and match it to the *Open Street Map* network,
+- **utils** mainly handles conversion from geojson, metadata etc. to *DataFrame*,
+- **ui** is used to generate *Leaflet* maps,
+- **io** handles reading and writing files,
+- **db** let you access a *SQLite3* database.
 
 ### Usage
 
