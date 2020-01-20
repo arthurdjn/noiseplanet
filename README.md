@@ -6,12 +6,12 @@ Made in collaboration with the *École Nationale des Sciences Géographiques*.
 
 **Citation :** Dujardin, A., Mermet, S.(2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
 
-### Overview
+## Overview
 
 **noiseplanet** is a Python package that let you extract, correct, and plot geojson data on Leaflet maps.
 
 
-### Installing
+## Installing
 #### Dependencies
 This module use several packages :
 - **numpy**,
