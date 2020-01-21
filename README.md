@@ -8,7 +8,7 @@ Made in collaboration with the *École Nationale des Sciences Géographiques*.
 
 ## Overview
 
-**noiseplanet** is a Python package that let you extract, correct, and plot geojson data on Leaflet maps.
+**noiseplanet** is a Python package that lets you extract, correct, and plot geojson data on Leaflet maps.
 
 
 ## Installing
@@ -46,11 +46,11 @@ If you want to participate to the improvement of this project, clone the reposit
 ### Structure
 
 *noiseplanet* is composed by internal sub-packages:
-- **matching** let you correct tracks and match it to the *Open Street Map* network,
+- **matching** lets you correct tracks and match it to the *Open Street Map* network,
 - **utils** mainly handles conversion from geojson, metadata etc. to *DataFrame*,
 - **ui** is used to generate *Leaflet* maps,
 - **io** handles reading and writing files,
-- **db** let you access a *SQLite3* database.
+- **db** lets you access a *SQLite3* database.
 
 ## Usage
 
@@ -72,7 +72,7 @@ track = np.array([[45.7584882 ,  4.83585996],
                   [45.75849549,  4.83585205],
                   [45.75849134,  4.83584647],
                   [45.75848135,  4.8358245 ],
-                  [45.75846756,  4.83580848],
+                  # ...
                   [45.75846756,  4.83580848],
                   [45.75844998,  4.83580936],
                   [45.7584067 ,  4.83580086],
