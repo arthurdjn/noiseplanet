@@ -22,6 +22,8 @@ def hexgrid_folium(m, bbox, side_length=50000):
     proj_out="epsg:3857"
     grid = hexgrid.hexbin_grid(bbox, side_length=side_length, proj_init=proj_init, proj_out=proj_out)
 
+    print("size grid :", len(grid))
+
     # ... and reproject each hexagonal in the geographic system
     # save in local the geojson
     features = []
@@ -53,25 +55,25 @@ def hexgrid_folium(m, bbox, side_length=50000):
                                           'fillOpacity': 0.55,
                                          })
 
-        m.add_child(gj)
+        # m.add_child(gj)
 
-    folium.CircleMarker(location=[bbox[0], bbox[1]],
-                    radius=5,
-                    weight=1,
-                    color="red",
-                    fill=True,
-                    fill_opacity=1).add_to(m)
+    # folium.CircleMarker(location=[bbox[0], bbox[1]],
+    #                 radius=5,
+    #                 weight=1,
+    #                 color="red",
+    #                 fill=True,
+    #                 fill_opacity=1).add_to(m)
 
-    folium.CircleMarker(location=[bbox[2], bbox[3]],
-                    radius=5,
-                    weight=1,
-                    color="red",
-                    fill=True,
-                    fill_opacity=1).add_to(m)
+    # folium.CircleMarker(location=[bbox[2], bbox[3]],
+    #                 radius=5,
+    #                 weight=1,
+    #                 color="red",
+    #                 fill=True,
+    #                 fill_opacity=1).add_to(m)
 
 
-    m.save("my_hexbin_map2.html")
-    webbrowser.open("my_hexbin_map2.html", new=2)  # open in new tab
+    # m.save("my_hexbin_map2.html")
+    # webbrowser.open("my_hexbin_map2.html", new=2)  # open in new tab
 
     geojsons = {"type": "FeatureCollection",
                 "properties":{
@@ -82,14 +84,16 @@ def hexgrid_folium(m, bbox, side_length=50000):
                 }
 
     # Write the geojson
-    outname = 'hex2' + '.geojson'
-
+    outname = 'hexgrid_lyon' + '.geojson'
+    
+    print("saving...")
+    
     with open(outname, 'w') as f:
         json.dump(geojsons, f)
 
 
 
-    return m
+    # return m
 
 
 def add_hexagons_folium(m, hexagons):
@@ -135,8 +139,8 @@ if __name__ == "__main__":
     # 1/ Create a grid
     m = folium.Map(zoom_start = 5, location=[55, 0])
 
-    lower_left = [45.75, 4.85]
-    upper_right = [45.76, 4.86]
+    lower_left = [45.743860, 4.821815]
+    upper_right = [45.763263, 4.858980]
     bbox = (lower_left[1], lower_left[0], upper_right[1], upper_right[0])
     hexgrid_folium(m, bbox, side_length=15)
 
@@ -162,7 +166,7 @@ if __name__ == "__main__":
                                     proj_init=proj_init, proj_out=proj_out)
 
 
-    add_hexagons_folium(m, hexagons)
+    # add_hexagons_folium(m, hexagons)
 
 
 

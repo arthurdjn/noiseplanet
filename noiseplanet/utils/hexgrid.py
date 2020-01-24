@@ -13,23 +13,41 @@ from pyproj import Proj, Transformer
 
 
 def hexbin_grid(bbox, side_length=1, proj_init=None, proj_out=None):
-    """ 
-        Create a grid of hexagons
-        
-    :param bbox: bounding box of the grid (x_lower_left, y_lower_left, x_upper_right, y_upper_right)
-    type bbox: tuple
-    :param side_length: length of the hexagon side.
-    type side_length: float
-    :param proj_init: projection id of the initial coordinates
-    type proj_init: String
-    :param proj_out: projection if of the output coordinates
-    type proj_out: String
-    
-    :return : a list of hexagons. An hexagon is a list of seven point coordinates.
-    rtype: list
     """
+    Create a grid of hexagons.
     
-    
+    See http://www.calculatorsoup.com/calculators/geometry-plane/polygon.php
+
+    Parameters
+    ----------
+    bbox : Tuple
+        Box of the area to generate the hexagons.
+        Format : Lower X, Lower Y, Upper X, Upper Y.
+    side_length : float, optional
+        Side length of the hexagons. The default is 1.
+    proj_init : String, optional
+        If working with coordinates and the hexgrid need to be calculated in another
+        coordinates system, paste the starting coordinates system.
+        The default is None.
+    proj_out : String, optional
+        If working with coordinates and the hexgrid need to be calculated in another
+        coordinates system, paste the ending coordinates system.
+        The default is None.
+        
+        Example :
+            If the bbox is in geographic coordinates, but the hexgrid should be computed
+            on the web mercator system. 
+            Then,
+            >>> proj_init="epsg:4326"
+            >>> proj_out="epsg:3857"
+        
+    Returns
+    -------
+    polygons : List
+        List of hexagons. An hexagons is a list of coordinates (tuple, Lat, Lon).
+
+    """
+
     startx = bbox[0]
     starty = bbox[1]
     endx = bbox[2]
@@ -44,7 +62,6 @@ def hexbin_grid(bbox, side_length=1, proj_init=None, proj_out=None):
 
     
     # calculate coordinates of the hexagon points
-    # see http://www.calculatorsoup.com/calculators/geometry-plane/polygon.php
     p = side_length * 0.5
     b = side_length * math.cos(math.radians(30))
     w = b * 2
@@ -246,13 +263,6 @@ def nearest_hexagon(point, origin=(0, 0), side_length=1,
     q = rx
     r = rz
     
-    # # Cartesian coordinates
-    # center = hex_to_cartesian((q, r), origin=origin, side_length=side_length)
-    
-    # if proj:
-    #     transformer = Transformer.from_proj(Proj(init=proj_out), Proj(init=proj_init))
-    #     center = transformer.transform(center[0], center[1])
-
     return q, r
 
 

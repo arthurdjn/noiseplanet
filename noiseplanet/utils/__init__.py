@@ -6,3 +6,4 @@ Created on Wed Dec 18 22:16:19 2019
 """
 
 from noiseplanet.utils.functions import *
+from noiseplanet.utils.hexgrid import *

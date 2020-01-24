@@ -10,13 +10,45 @@ import numpy as np
 
 
 # =============================================================================
-#     Distance computation
+#   Distance computation for comparison
+#   Later, the distance along the WGS84 ellipsoid will be used (from pyproj)
 # =============================================================================
-def distance_cartesian(pointA, pointB):
+def distance_great_circle(pointA, pointB):
+    """
+    Compute the Great Circle Distance between two points.
+
+    Parameters
+    ----------
+    pointA : Tuple
+        Pooint A.
+    pointB : Tuple
+        Point B.
+
+    Returns
+    -------
+    distance : Float
+        Distance between A and B.
+    """
     return ((pointA[0] - pointB[0])**2 + (pointA[1] - pointB[1])**2)**0.5
 
 
 def distance_haversine(pointA, pointB):
+    """
+    Compute the Haversine distance between two points, in Lat Lon.
+
+    Parameters
+    ----------
+    pointA : Tuple
+        Point A in (Lat, Lon) format.
+    pointB : Tuple
+        Point B in (Lat, Lon) format.
+
+    Returns
+    -------
+    distance : Float
+        Distance between A and B.
+    """
+    
     lat1 = pointA[0] * np.pi/180
     lat2 = pointB[0] * np.pi/180
     lon1 = pointA[1] * np.pi/180
@@ -24,37 +56,55 @@ def distance_haversine(pointA, pointB):
     
     a = (np.sin((lat1 - lat2)/2))**2 + np.cos(lat1)*np.cos(lat2)*(np.sin((lon1 - lon2)/2))**2
     c = 2*np.arctan2(a**0.5, (1 - a)**0.5)
+    # Earth's radius
     r = 6378137
+    
     return r*c
 
 
 # =============================================================================
 #     Ortho projection
 # =============================================================================
-def slope(point1, point2):
+def slope(pointA, pointB):
     """
-        *** Compute the slope (directional coefficient) of a line from two points ***
-        :param point1, point2: coordinates (x, y) = (lon, lat)
-        type point1, point2: tuple
-        return: the slope from point1 to point2
-        rtype: tuple
+    Compute the slope (directional coefficient) of a line from two points.
+
+    Parameters
+    ----------
+    pointA : Tuple
+        Pooint A.
+    pointB : Tuple
+        Point B.
+
+    Returns
+    -------
+    slope : Tuple
+        Slope vector from point A to point B.
     """
-    d = ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**0.5
-    return ((point2[0] - point1[0])/d, (point2[1] - point1[1])/d)
+    
+    d = distance_great_circle(pointA, pointB)
+    return ((pointB[0] - pointA[0])/d, (pointB[1] - pointA[1])/d)
 
 
 def orthoProj(pointA, pointB, S):
     """
-        *** Orthogonal projection of a point into a line ***
-        :param pointA: point(x, y) = (lon, lat) to project on the line        
-        type pointA: tuple
-        :param pointB: point that belongs to the line
-        type pointB: tuple
-        :param S: slope of the line
-        type S: tuple
-        return: the projection of point on the line
-        rtype: tuple
+    Orthogonal projection of a point on a line.
+
+    Parameters
+    ----------
+    pointA : Tuple
+        Point to project on the line.
+    pointB : Tuple
+        Point belonging to the line.
+    S : Tuple
+        Slope of the line.
+
+    Returns
+    -------
+    projection : Tuple
+        Porjection of Point A on the line (Point B, Slope).
     """
+
     d = (S[0]**2 + S[1]**2)**.5
     BH = ((pointA[0] - pointB[0])*S[0] + (pointA[1] - pointB[1])*S[1])/d
     
@@ -65,64 +115,68 @@ def orthoProj(pointA, pointB, S):
 
 def orthoProjSegment(pointA, pointB, pointC):
     """
-        *** Orthogonal projection of a point into a line ***
-        
-        :param pointA: point(x, y) = (lon, lat) to project on the line
-        type pointA: tuple
-        :param pointB: first extremity of the line
-        type pointB: tuple
-        :param pointB: last extremity of the line
-        type pointB: tuple
-        
-        return: the projection of point on the line
-        rtype: tuple
-        
-        -----------------------------------------------------------------------
-        Description :
-            Projection of a point A on the segment [B, C]
-            There is no specific order for the input pointB or pointC
-            Example :           
-                Case 1 :
-                    a) The slope from B to C is (+.., +..)
-                                 C
-                                x
-                               /
-                              /         x A
-                             /
+    Orthogonal projection of a point into a line.
+
+    Parameters
+    ----------
+    pointA : Tuple
+        Point to project on the line.
+    pointB : Tuple
+        Point belonging to the line.
+    pointC : Tuple
+        Second point belonging to the line.
+
+    Returns
+    -------
+    projection : Tuple
+        Porjection of Point A on the line (Point B, Slope).
+
+    ---------------------------------------------------------------------------
+    Description :
+        Projection of a point A on the segment [B, C]
+        There is no specific order for the input pointB or pointC
+        Example :           
+            Case 1 :
+                a) The slope from B to C is (+.., +..)
+                             C
                             x
-                           B        
-                                
-                    a) The slope from B to C is (-.., -..)
-                                 B
-                                x
-                               /
-                              /         x A
-                             /
+                           /
+                          /         x A
+                         /
+                        x
+                       B        
+                            
+                a) The slope from B to C is (-.., -..)
+                             B
                             x
-                           C
-                           
-                Case 2 :
-                    a) The slope from B to C is (+.., -..)
-                          B
-                           x
-                            \
-                             \         x A
-                              \
-                               \
-                                x
-                                 C
-                                
-                    b) The slope from B to C is (-.., +..)
-                          C
-                           x
-                            \
-                             \         x A
-                              \
-                               \
-                                x
-                                 B  
-        -----------------------------------------------------------------------
+                           /
+                          /         x A
+                         /
+                        x
+                       C
+                       
+            Case 2 :
+                a) The slope from B to C is (+.., -..)
+                      B
+                       x
+                        \
+                         \         x A
+                          \
+                           \
+                            x
+                             C
+                            
+                b) The slope from B to C is (-.., +..)
+                      C
+                       x
+                        \
+                         \         x A
+                          \
+                           \
+                            x
+                             B  
     """    
+    
     S = slope(pointB, pointC)
     xH, yH = orthoProj(pointA, pointB, S)
     
@@ -450,12 +504,9 @@ if __name__ == "__main__":
     plt.legend(loc=1, frameon=True) 
     plt.xlabel("x")
     plt.axis("equal")
-    
-    
-    
-    
+       
     plt.tight_layout()
-    plt.savefig("../../../img/ortho_projection_model.png", dpi=600)
+    # plt.savefig("../../../img/ortho_projection_model.png", dpi=600)
     
     
   

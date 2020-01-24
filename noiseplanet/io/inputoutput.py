@@ -12,6 +12,16 @@ import numpy as np
 import noiseplanet.utils as utils
 
 
+def open_geojson(file_name):
+    with open(file_name) as f:
+        geojson = json.load(f)
+    return geojson
+
+
+def save_geojson(geojson, file_name):
+    with open(file_name, 'w') as f:
+        json.dump(geojson, f)
+
 
 def open_files(dir_path, ext="geojson"):
     """
@@ -62,6 +72,41 @@ def open_files(dir_path, ext="geojson"):
 
 
 
+
+def open_properties(filepath, sep='=', comment_char='#'):
+    """
+    Read the file passed as parameter as a properties file.
+    """
+    properties = {}
+    with open(filepath, "rt") as f:
+        for line in f:
+            l = line.strip()
+            if l and not l.startswith(comment_char):
+                key_value = l.split(sep)
+                key = key_value[0].strip()
+                value = sep.join(key_value[1:]).strip().strip('"') 
+                properties[key] = value 
+    return properties
+    # return pd.DataFrame(data=props, index=[0])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def generate_hex(Q, R, origin, side_length, df_properties=None, out_dirpath="."):
     
     # Project the coordinates in the webmercator system
@@ -96,6 +141,10 @@ def generate_hex(Q, R, origin, side_length, df_properties=None, out_dirpath=".")
     
 
 
+
+
+
+# Create Geojson
 def generate_hexs(Q, R, origin, side_length, df_props=None, out_dirpath="."):
     
     # Project the coordinates in the webmercator system

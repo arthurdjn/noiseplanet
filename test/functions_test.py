@@ -30,8 +30,12 @@ df3 = utils.geojson_to_df(geojson)
 
 df.to_json("data/test.geojson")
 
-df4 = json_normalize(geojson["features"])
-df5 = utils.geojson_to_df(geojson)
+# file = "data/test.geojson"
+# with open(file) as f:
+#     geojson = json.load(f)
+
+# df4 = json_normalize(geojson["features"])
+# df5 = utils.geojson_to_df(geojson)
 
 
-np.array([*df['geometry.coordinates']])
+print(np.array([*df['geometry.coordinates']]))
