@@ -8,7 +8,7 @@ Made in collaboration with the *École Nationale des Sciences Géographiques*.
 
 ## Overview
 
-**noiseplanet** is a Python package that let you extract, correct, and plot geojson data on Leaflet maps.
+**noiseplanet** is a Python package that lets you extract, correct, and plot geojson data on Leaflet maps.
 
 
 ## Installing
@@ -46,13 +46,47 @@ If you want to participate to the improvement of this project, clone the reposit
 ### Structure
 
 *noiseplanet* is composed by internal sub-packages:
-- **matching** let you correct tracks and match it to the *Open Street Map* network,
+- **matching** lets you correct tracks and match it to the *Open Street Map* network,
 - **utils** mainly handles conversion from geojson, metadata etc. to *DataFrame*,
 - **ui** is used to generate *Leaflet* maps,
 - **io** handles reading and writing files,
-- **db** let you access a *SQLite3* database.
+- **db** lets you access a *SQLite3* database.
 
 ## Usage
 
-This project was created to provide new ways of mapping for the *UMR-AE/CNRS* team.
+This project was created to provide new ways of mapping for the *UMR-AE/CNRS* team. 
 
+### Map Matching
+
+The **noiseplanet** package provides different tools for matching a track to the *Open Street Map* network.
+- matching to the **nearest** edge,
+- **hmm** based matching.
+To match a track, composed by latitudes and longitudes, use :
+```python
+import numpy as np
+import osmnx as ox
+from noiseplanet import matching
+
+track = np.array([[45.7584882 ,  4.83585996],
+                  [45.75848068,  4.83586747],
+                  [45.75849549,  4.83585205],
+                  [45.75849134,  4.83584647],
+                  [45.75848135,  4.8358245 ],
+                  # ...
+                  [45.75846756,  4.83580848],
+                  [45.75844998,  4.83580936],
+                  [45.7584067 ,  4.83580086],
+                  [45.7584067 ,  4.83580086],
+                  [45.75839346,  4.83579883]])
+
+graph = matching.model.graph_from_track(track)
+
+track_coor, route_corr, edgeid, stats = matching.match(graph, track, method='hmm')
+```
+![Map Matching in Lyon](img/track_hmm.png)
+
+## Maps
+
+### Hexgrid
+
+### Route
