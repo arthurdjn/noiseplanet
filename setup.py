@@ -14,13 +14,15 @@ with open("README.md", "r") as fh:
 
 setup(name='noiseplanet',
         version='0.1',
-        description='Testing installation of Package',
+        description='GeoJson map matching from Noise Planet data server.',
         long_description=long_description,
         long_description_content_type="text/markdown",
         url='https://github.com/arthurdjn/noise_capture',
         author='Arthur Dujardin',
         author_email='arthur.dujardin@ensg.eu',
         license='Apache License-2.0',
+        
+        install_requires = ['pandas', 'osmnx', 'json'],
         packages=find_packages(),
         namespace_packages=['noiseplanet'],
         zip_safe=False,
