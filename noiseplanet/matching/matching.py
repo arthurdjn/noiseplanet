@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Jan 18 22:26:12 2020
 
-@author: Utilisateur
+# Created on Sat Jan 18 22:26:12 2020
+
+# @author: Utilisateur
+
 """
+Matching Module.
+
+Match a track/GeoJson to the Open Street Map network.
+"""
+
 
 # Classic Library
 import numpy as np

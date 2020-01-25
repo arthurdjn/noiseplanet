@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Nov  9 15:45:45 2019
 
-@author: arthurd
+# Created on Tue Dec 24 16:49:20 2019
+
+# @author: arthurd
+
+"""
+OProj Module.
+
+Compute orthogonal projection on lines and segment.
 """
 
 import matplotlib.pyplot as plt
@@ -130,51 +135,6 @@ def orthoProjSegment(pointA, pointB, pointC):
     -------
     projection : Tuple
         Porjection of Point A on the line (Point B, Slope).
-
-    ---------------------------------------------------------------------------
-    Description :
-        Projection of a point A on the segment [B, C]
-        There is no specific order for the input pointB or pointC
-        Example :           
-            Case 1 :
-                a) The slope from B to C is (+.., +..)
-                             C
-                            x
-                           /
-                          /         x A
-                         /
-                        x
-                       B        
-                            
-                a) The slope from B to C is (-.., -..)
-                             B
-                            x
-                           /
-                          /         x A
-                         /
-                        x
-                       C
-                       
-            Case 2 :
-                a) The slope from B to C is (+.., -..)
-                      B
-                       x
-                        \
-                         \         x A
-                          \
-                           \
-                            x
-                             C
-                            
-                b) The slope from B to C is (-.., +..)
-                      C
-                       x
-                        \
-                         \         x A
-                          \
-                           \
-                            x
-                             B  
     """    
     
     S = slope(pointB, pointC)

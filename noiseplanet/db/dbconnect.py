@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Dec 24 11:28:24 2019
 
-@author: arthurd
+# Created on Thu Dec 5 16:49:20 2019
+
+# @author: arthurd
+
+"""
+DBConnect Module.
+
+Interaction DataFrame - DataBase.
 """
 
 import sqlite3

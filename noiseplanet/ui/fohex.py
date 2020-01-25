@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Dec  5 22:16:26 2019
 
-@author: arthurd
+# Created on Thu Dec 5 16:49:20 2019
+
+# @author: arthurd
+
+"""
+FoHex Module.
+
+Generate HTML hexagonal maps.
 """
 
 

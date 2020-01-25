@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sun Dec 15 15:33:13 2019
 
-@author: arthurd
+# Created on Sun Dec 15 15:33:13 2019
+
+# @author: arthurd
+
+"""
+DataCleaner Module.
+
+This module is under improvement. 
+The aim is to clean and fix missing values in a pandas DataFrame.
 """
 
             

@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Dec  5 22:16:26 2019
 
-@author: arthurd
+# Created on Thu Dec 5 16:49:20 2019
+
+# @author: arthurd
+
+"""
+Main module.
+
+Download GeoJson tracks from NoisePlanet server.
+Match GeoJson tracks on the OSM network and Save them in a DataBase.
 """
 
 import pandas as pd
@@ -13,6 +19,29 @@ from noiseplanet import db, utils, io, matching
 
 
 def main(dir_geojson, dir_properties=None, out_dirname=".", method="nearest", db_file='database.db', log=True):
+    """
+    Main function
+
+    Parameters
+    ----------
+    dir_geojson : TYPE
+        DESCRIPTION.
+    dir_properties : TYPE, optional
+        DESCRIPTION. The default is None.
+    out_dirname : TYPE, optional
+        DESCRIPTION. The default is ".".
+    method : TYPE, optional
+        DESCRIPTION. The default is "nearest".
+    db_file : TYPE, optional
+        DESCRIPTION. The default is 'database.db'.
+    log : TYPE, optional
+        DESCRIPTION. The default is True.
+
+    Returns
+    -------
+    None.
+    """
+    
     # Map Matching on all the geojson tracks
     matching.match_from_geojsons(dir_geojson, out_dirname=out_dirname, method=method, log=True)
     

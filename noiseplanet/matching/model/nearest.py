@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Dec 24 16:41:02 2019
 
-@author: arthurd
+# Created on Tue Dec 24 16:49:20 2019
+
+# @author: arthurd
+
+"""
+Nearest Module.
+
+Map Matching to the nearest edge.
 """
 
 # Classic Library
@@ -18,6 +23,15 @@ import noiseplanet.matching.model.route as rt
 def match_nearest_edge(graph, track):
     """
     Algorithm to match the track to the nearest edge on the Open Street Map network.
+
+    This function match a track of GPS coordinates, in the (Lat, Lon) format.
+    to a graph.
+
+    It loops all over the points to match them to the closest edge of the
+    OSM network. The GPS points are projected on the edge with an
+    orthogonal projection.
+    If the projected point goes outside of the edge, then it is match to
+    one extremity (see noiseplanet.utils.oproj documentation for more details).
 
     Parameters
     ----------
@@ -42,29 +56,32 @@ def match_nearest_edge(graph, track):
         'proj_length' is the length of the projection (from track's point to corrected ones),
         'path_length' is the distance on the graph between two following points,
         'unlinked' higlights unconnected points on the graph.
-
-    ---------------------------------------------------------------------------
-    Description :
-        This function match a track of GPS coordinates, in the (Lat, Lon) format.
-        to a graph.
-
-        It loops all over the points to match them to the closest edge of the
-        OSM network. The GPS points are projected on the edge with an
-        orthogonal projection.
-        If the projected point goes outside of the edge, then it is match to
-        one extremity (see oproj.py documentation for more details).
-
-        The id of the closest edge is stacked (into the array 'edgeid'), so the
-        path from each nodes along edges can be computed.
-    ---------------------------------------------------------------------------
-    Example :
+   
+    Example
+    -------
+        >>> import osmnx as ox
+        >>> import numpy as np
+        >>> from noiseplanet.matching.model.leuven import leuven
         >>> place_name = "2e Arrondissement, Lyon, France"
         >>> distance = 1000  # meters
         >>> graph = ox.graph_from_address(place_name, distance)
-        >>> track = track = [[45.81, 4.56],
-                             [45.81, 4.57],
-                             [45.82, 4.57]]
-        >>> track_corr, route_corr, edgeid = match_nearest_edge(graph, track)
+        >>> track = np.array([[45.75809136,  4.83577159],
+                              [45.7580932 ,  4.83576182],
+                              [45.7580929 ,  4.8357634 ],
+                              [45.75809207,  4.8357678 ],
+                              [45.75809207,  4.8357678 ],
+                              [45.75809647,  4.83574439],
+                              [45.75809908,  4.83573054],
+                              [45.75809908,  4.83573054],
+                              [45.75810077,  4.83572153],
+                              [45.75810182,  4.83571596],
+                              [45.75810159,  4.83571719],
+                              [45.7581021 ,  4.83571442],
+                              [45.7580448 ,  4.83558152],
+                              [45.75804304,  4.83558066],
+                              [45.75804304,  4.83558066],
+                              [45.75802703,  4.83557288]])
+        >>> track_corr, route_corr, edgeid = match_nearest(graph, track)
     """
     # id of the nearest edges
     edgeid = ox.get_nearest_edges(graph, track[:,1], track[:,0],  method='balltree', dist=.000001)

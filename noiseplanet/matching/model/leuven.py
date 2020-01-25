@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Dec 24 16:41:41 2019
 
-@author: arthurd
+# Created on Tue Dec 24 16:49:20 2019
+
+# @author: arthurd
+
+"""
+Leuven Module.
+
+Map Matching from Leuven algorithm.
 """
 
 # Classic Library
 import numpy as np
 from pyproj import Geod
-import pandas as pd
 
 # Leuven Map Matching algorithm
 from leuvenmapmatching.matcher.distance import DistanceMatcher   # map matching
@@ -19,9 +23,13 @@ from leuvenmapmatching.map.inmem import InMemMap                 # leuven graph 
 def match_leuven(graph, track):
     """
      Algorithm to match the track to the most probable route.
+     
      Rely on Leuven Map Matching package.
+     Copyright 2015-2018, KU Leuven - DTAI Research Group, Sirris - Elucidata Group.
      See the docs : https://leuvenmapmatching.readthedocs.io/en/latest/index.html
-
+     
+     If you want custom Distance Matcher, then change 'matcher' on this function.
+     
     Parameters
     ----------
     graph : NetworkX MultiDiGraph
@@ -47,20 +55,31 @@ def match_leuven(graph, track):
         'path_length' is the distance on the graph between two following points,
         'unlinked' higlights unconnected points on the graph.
 
-    ---------------------------------------------------------------------------
-    Description :
-        Leuven Map matching algorithm,
-        Copyright 2015-2018, KU Leuven - DTAI Research Group, Sirris - Elucidata Group.
-        Map Matching with non-emitting edgeid (offline) for Map Matching.
-    ---------------------------------------------------------------------------
-    Example :
+    Example
+    -------
+        >>> import osmnx as ox
+        >>> import numpy as np
+        >>> from noiseplanet.matching.model.leuven import match_leuven
         >>> place_name = "2e Arrondissement, Lyon, France"
         >>> distance = 1000  # meters
         >>> graph = ox.graph_from_address(place_name, distance)
-        >>> track = track = [[45.81, 4.56],
-                             [45.81, 4.57],
-                             [45.82, 4.57]]
-        >>> track_corr, route_corr, edgeid = match_nearest_edge(graph, track)
+        >>> track = np.array([[45.75809136,  4.83577159],
+                              [45.7580932 ,  4.83576182],
+                              [45.7580929 ,  4.8357634 ],
+                              [45.75809207,  4.8357678 ],
+                              [45.75809207,  4.8357678 ],
+                              [45.75809647,  4.83574439],
+                              [45.75809908,  4.83573054],
+                              [45.75809908,  4.83573054],
+                              [45.75810077,  4.83572153],
+                              [45.75810182,  4.83571596],
+                              [45.75810159,  4.83571719],
+                              [45.7581021 ,  4.83571442],
+                              [45.7580448 ,  4.83558152],
+                              [45.75804304,  4.83558066],
+                              [45.75804304,  4.83558066],
+                              [45.75802703,  4.83557288]])
+        >>> track_corr, route_corr, edgeid = match_leuven(graph, track)
     """
 
     # Reference ellipsoid for distance

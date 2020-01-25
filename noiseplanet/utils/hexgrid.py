@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
-'''
-Created on Wed Dec 18 16:34:04 2019
 
-@author: arthurd
-'''
+# Created on Tue Dec 18 16:49:20 2019
+
+# @author: arthurd
+
+"""
+HexGrid Module.
+
+Generate Hexagonal grid. Cartesian-Hexagonal coordinates interaction.
+"""
 
 
 import numpy as np
@@ -34,7 +39,8 @@ def hexbin_grid(bbox, side_length=1, proj_init=None, proj_out=None):
         coordinates system, proj_out refers to the ending coordinates system.
         The default is None.
         
-        Example :
+        Example
+        -------
             If the bbox is in geographic coordinates, but the hexgrid should be computed
             on the web mercator system. 
             Then,

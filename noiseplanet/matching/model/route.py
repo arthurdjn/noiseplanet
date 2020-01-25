@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Dec 24 16:49:20 2019
 
-@author: arthurd
+# Created on Tue Dec 24 16:49:20 2019
+
+# @author: arthurd
+
+"""
+Route Module.
+
+Track - OSM network interactions.
 """
 
 # Classic Library
@@ -33,20 +38,20 @@ def graph_from_track(track, network='all'):
     graph : NetworkX MultiDiGraph
         Open Street Map graph of the track area.
         
-    ---------------------------------------------------------------------------
-    Example :
-        >>> track = [[4.8396232, 45.7532804], 
-                     [4.839917548464699, 45.75345336404514],
-                     [4.828226357067425, 45.747825316200384]]
+    Example
+    -------
+        >>> import numpy as np
+        >>> from noiseplanet.matching.model.route import graph_from_track
+        >>> track = np.array([[4.8396232, 45.7532804], 
+                              [4.839917548464699, 45.75345336404514],
+                              [4.828226357067425, 45.747825316200384]])
         >>> graph = graph_from_track(track, network='all')
         >>> graph
             <networkx.classes.multidigraph.MultiDiGraph at 0x155de2260c8>
-            
-        Then you can visualize the graph, with matplotlib with :
+        # Then you can visualize the graph, with matplotlib with :
+        >>> import osmnx as ox
         >>> fig, ax = ox.plot_graph(graph)
-        
-        See the OSMNX documentation for more details
-    ---------------------------------------------------------------------------
+        # See the OSMNX documentation for more details
     """
     lat = track[:, 0]
     lon = track[:, 1]
@@ -86,6 +91,23 @@ def route_from_track(graph, track, edgeid=None):
         Statistics of the routing connection.
         'path_length' is the distance on the graph between two following points,
         'unlinked' higlights unconnected points on the graph.
+        
+    Example
+    -------
+        >>> import numpy as np
+        >>> from noiseplanet.matching.model.route import route_from_track, graph_from_track
+        >>> track = np.array([[45.75809136,  4.83577159],
+                              [45.7580932 ,  4.83576182],
+                              [45.7580929 ,  4.8357634 ],
+                              [45.75809207,  4.8357678 ],
+                              [45.75809207,  4.8357678 ],
+                              [45.75809647,  4.83574439],
+                              [45.75809908,  4.83573054],
+                              [45.75809908,  4.83573054],
+                              [45.75810077,  4.83572153],
+                              [45.75810182,  4.83571596]])
+        >>> graph = graph_from_track(track, network='all')
+        >>> route_corr, stats = route_from_track(graph, track)
     """
                      
     # Reference ellipsoid for distance

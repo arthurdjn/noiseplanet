@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Dec  5 21:47:43 2019
 
-@author: arthurd
+# Created on Thu Dec 5 16:49:20 2019
+
+# @author: arthurd
+
+"""
+FoRoute Module.
+
+Visualize Map Matching routes on HTML maps.
 """
 
 from matplotlib import collections as mc
