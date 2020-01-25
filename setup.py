@@ -21,8 +21,8 @@ setup(name='noiseplanet',
         author='Arthur Dujardin',
         author_email='arthur.dujardin@ensg.eu',
         license='Apache License-2.0',
-        
-        install_requires = ['numpy', 'pandas', 'osmnx', 'json'],
+
+        install_requires = ['numpy', 'pandas', 'json', 'osmnx', 'folium', 'matplotlib', 'webbrowser', 'pyproj', 'leuvenmapmatching'],
         packages=find_packages(),
         namespace_packages=['noiseplanet'],
         zip_safe=False,
