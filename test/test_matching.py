@@ -8,7 +8,7 @@ import numpy as np
 import osmnx as ox
 import time
 
-from noiseplanet import matching
+from noiseplanet import matcher
 
 def test_match():
     print('\nTest match(graph, track, method)')
@@ -59,23 +59,23 @@ def test_match():
                        [45.75772904,  4.83492365]])
     method = 'nearest'
     start = time.time()
-    track_corr, route_corr, edgeid, stats = matching.match(graph, track, method)
+    track_corr, route_corr, edgeid, stats = matcher.match(graph, track, method)
     print('Map Matching nearest in {0}s'.format(round(time.time() - start, 5)))
     # print('track_corr {0}\nroute_corr {1}\nedgeid {2}\nstats {3}'.format(track_corr, route_corr, edgeid, stats))
 
     method = 'hmm'
     start = time.time()
-    track_corr, route_corr, edgeid, stats = matching.match(graph, track, method)
+    track_corr, route_corr, edgeid, stats = matcher.match(graph, track, method)
     print('Map Matching hmm in {0}s'.format(round(time.time() - start, 5))) 
     # print('track_corr {0}\nroute_corr {1}\nedgeid {2}\nstats {3}'.format(track_corr, route_corr, edgeid, stats))
 
 def test_match_from_geojson(dirname, out_dirname=".", method="nearest", log=True):
-    matching.match_from_geojsons(dirname, out_dirname=out_dirname, method=method, log=log)
+    matcher.match_from_geojsons(dirname, out_dirname=out_dirname, method=method, log=log)
 
 
 def test_match_from_geojsons(dirname, out_dirname=".", method="nearest", log=True):
     print('\nTest match_from_geojsons(dirname, out_dirname=".", method="nearest", log=True)')
-    matching.match_from_geojsons(dirname, out_dirname=out_dirname, method=method, log=log)
+    matcher.match_from_geojsons(dirname, out_dirname=out_dirname, method=method, log=log)
 
 
 

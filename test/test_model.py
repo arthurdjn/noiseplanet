@@ -14,13 +14,14 @@ import matplotlib.pyplot as plt
 from matplotlib import collections as mc
 
 # Test the import
-from noiseplanet.matching import model
-from noiseplanet.matching.model import route
+from noiseplanet.matcher import model
+from noiseplanet.matcher.model import route
 
 
 
 
 def test_nearest():
+    print('Test match_nearest_edge(graph, track)')
     track = np.array( [[45.75815477,  4.83579607],
                        [45.75815501,  4.83578568],
                        [45.75813165,  4.83577836],
@@ -88,7 +89,7 @@ def test_nearest():
 
 
 def test_leuven():
-    
+    print('Test match_leuven(graph, track)')
     track = np.array( [[45.75815477,  4.83579607],
                        [45.75815501,  4.83578568],
                        [45.75813165,  4.83577836],
@@ -156,7 +157,8 @@ def test_leuven():
     ax.legend(loc=1, frameon=True, facecolor='w')
 
 
-def test_route_from_graph():
+def test_route_from_track():
+    print('Test route_from_track(track)')
     track = np.array(  [[45.75809136,  4.83577159],
                         [45.7580932 ,  4.83576182],
                         [45.7580929 ,  4.8357634 ],
@@ -263,7 +265,7 @@ if __name__ == "__main__":
     test_leuven()    
 
     # Testing route functions
-    test_route_from_graph()
+    test_route_from_track()
 
     
 
