@@ -12,13 +12,14 @@ Match a track/GeoJson to the Open Street Map network.
 
 
 # Classic Library
+import os
 import numpy as np
 import pandas as pd
 
 # Useful package
 from noiseplanet import io, utils
-from noiseplanet.matching import model
-from noiseplanet.matching import datacleaner
+from noiseplanet.matcher import model
+from noiseplanet.matcher import datacleaner
 
 
 def match(graph, track, method='hmm'):
@@ -130,7 +131,7 @@ def match_geojson(geojson, method="hmm", log=True):
     return geojson
 
 
-def match_from_geojson(file, out_dirname='.', method="hmm", log=True):
+def match_from_geojson(*file, out_dirname='.', method="hmm", log=True):
     """
     Match a GeoJson track on the Open Street Map network.
 
@@ -155,19 +156,20 @@ def match_from_geojson(file, out_dirname='.', method="hmm", log=True):
     -------
     None.
     """
+    
+    for f in file:
+        name = f.split(os.sep)[-1].split(".")[0]    
+        # Open the geojson
+        geojson = io.open_geojson(f)
+        if log:
+            print('Name : {0}'.format(name))
+        geojson_corr = match_geojson(geojson, method=method, log=log)
+            
+        out_file = out_dirname + os.sep + name + '_' + method + '.geojson'
+        io.save_geojson(geojson_corr, out_file)
 
-    name = file.split("\\")[-1].split(".")[0]    
-    # Open the geojson
-    geojson = io.open_geojson(file)
-    if log:
-        print('Name : {0}'.format(name))
-    geojson_corr = match_geojson(geojson, method="hmm", log=True)
-        
-    out_file = out_dirname + '/' + name + '_' + method + '.geojson'
-    io.save_geojson(geojson_corr, out_file)
 
-
-def match_from_geojsons(dirname, out_dirname=".", method="hmm", log=True):
+def match_from_dir(dirname, out_dirname=".", method="hmm", log=True):
     """
     Match a list of GeoJson tracks on the Open Street Map network.
 

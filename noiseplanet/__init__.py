@@ -6,6 +6,6 @@ Created on Wed Dec 18 22:16:19 2019
 """
 
 from noiseplanet.main import *
-from noiseplanet.matching import *
+from noiseplanet.matcher import *
 
 __import__('pkg_resources').declare_namespace(__name__)

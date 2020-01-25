@@ -41,7 +41,7 @@ def graph_from_track(track, network='all'):
     Example
     -------
         >>> import numpy as np
-        >>> from noiseplanet.matching.model.route import graph_from_track
+        >>> from noiseplanet.matcher.model.route import graph_from_track
         >>> track = np.array([[4.8396232, 45.7532804], 
                               [4.839917548464699, 45.75345336404514],
                               [4.828226357067425, 45.747825316200384]])
@@ -95,7 +95,7 @@ def route_from_track(graph, track, edgeid=None):
     Example
     -------
         >>> import numpy as np
-        >>> from noiseplanet.matching.model.route import route_from_track, graph_from_track
+        >>> from noiseplanet.matcher.model.route import route_from_track, graph_from_track
         >>> track = np.array([[45.75809136,  4.83577159],
                               [45.7580932 ,  4.83576182],
                               [45.7580929 ,  4.8357634 ],

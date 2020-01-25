@@ -6,7 +6,6 @@
 
 """
 Leuven Module.
-
 Map Matching from Leuven algorithm.
 """
 
@@ -17,7 +16,6 @@ from pyproj import Geod
 # Leuven Map Matching algorithm
 from leuvenmapmatching.matcher.distance import DistanceMatcher   # map matching
 from leuvenmapmatching.map.inmem import InMemMap                 # leuven graph object
-# from noiseplanet.matching.model.route import route_from_graph
 
 
 def match_leuven(graph, track):
@@ -59,7 +57,7 @@ def match_leuven(graph, track):
     -------
         >>> import osmnx as ox
         >>> import numpy as np
-        >>> from noiseplanet.matching.model.leuven import match_leuven
+        >>> from noiseplanet.matcher.model.leuven import match_leuven
         >>> place_name = "2e Arrondissement, Lyon, France"
         >>> distance = 1000  # meters
         >>> graph = ox.graph_from_address(place_name, distance)

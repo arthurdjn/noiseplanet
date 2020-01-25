@@ -5,4 +5,5 @@ Created on Wed Dec 18 22:16:19 2019
 @author: Utilisateur
 """
 
-from noiseplanet.db.dbconnect import *
+from noiseplanet.db.connect import *
+from noiseplanet.db.commit import *

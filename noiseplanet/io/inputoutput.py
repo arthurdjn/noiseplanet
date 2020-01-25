@@ -11,9 +11,12 @@ This module save and open files/directory.
 """
 
 
+import requests
 import os
 import json
 import numpy as np
+import zipfile
+
 
 
 def open_geojson(file_path):
@@ -133,4 +136,111 @@ def open_properties(file_path, sep='=', comment_char='#'):
                 value = sep.join(key_value[1:]).strip().strip('"') 
                 properties[key] = value 
     return properties
+
+
+def unzip_file(*file, out_dir):
+    """
+    Unzip files in a directory.
+
+    Parameters
+    ----------
+    out_dir : String
+        Path to the output location.
+    *file : String
+        Path of files to unzip.
+
+    Returns
+    -------
+    None.
+    """
+    
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+    
+    filelist = ['track.geojson', 'meta.properties']
+    
+    for zip_file in file:  # loop through items in dir
+        name = zip_file.split(os.sep)[-1].split('.')[0].split('_')[1]
+        try:
+            with zipfile.ZipFile(zip_file) as zf:  # open the zip file
+                for target_file in filelist:  # loop through the list of files to extract
+                    if target_file in zf.namelist():  # check if the file exists in the archive
+                        # generate the desired output name:
+                        target_name = target_file.split('.')[0] + "_" + name + "." + target_file.split('.')[1]
+                        target_path = os.path.join(out_dir, target_name)  # output path
+                        with open(target_path, "wb") as f:  # open the output path for writing
+                            f.write(zf.read(target_file))  # save the contents of the file in it
+        except zipfile.BadZipFile:
+            print('Zip File Error : {0} has not been unziped.'.format(zip_file))
+    
+
+
+def unzip_dir(in_dir, out_dir):
+    """
+    Unzip files in a directory.
+
+    Parameters
+    ----------
+    out_dir : String
+        Path to the output location.
+    *file : String
+        Path of files to unzip.
+
+    Returns
+    -------
+    None.
+    """
+    
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+    
+    files = open_files(in_dir, ext='zip')
+    filelist = ['track.geojson', 'meta.properties']
+    
+    for file in files:  # loop through items in dir
+        name = file.split(os.sep)[-1].split('.')[0].split('_')[1]
+        try:
+            with zipfile.ZipFile(file) as zf:  # open the zip file
+                for target_file in filelist:  # loop through the list of files to extract
+                    if target_file in zf.namelist():  # check if the file exists in the archive
+                        # generate the desired output name:
+                        target_name = target_file.split('.')[0] + "_" + name + "." + target_file.split('.')[1]
+                        target_path = os.path.join(out_dir, target_name)  # output path
+                        with open(target_path, "wb") as f:  # open the output path for writing
+                            f.write(zf.read(target_file))  # save the contents of the file in it
+        except zipfile.BadZipFile:
+            print('Zip File Error : {0} has not been unziped.'.format(file))
+
+
+def extract_track(query_csv, out_dir='data'):
+    """
+    Extract GeoJson tracks from a CSV.
+    
+    See https://dashboard.noise-planet.org/public/question/52ee2bde-2d28-4377-bcbb-061d7cbfa343
+    
+    Parameters
+    ----------
+    query_csv : String
+        CSV file of the tracks.
+
+    Returns
+    -------
+    None.
+    """
+    
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+        
+    lines = open(query_csv, "r").readlines()
+    for line in lines[1:]:
+        url = line.split(",")[1][:-1]
+        filename = out_dir + os.sep + url[url.rfind("/") + 1:]
+        open(filename,"wb").write(requests.get(url).content)
+
+
+
+
+
+
+
 

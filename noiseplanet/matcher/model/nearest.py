@@ -17,7 +17,7 @@ from pyproj import Proj, Geod, Transformer
 
 # Useful script
 from noiseplanet.utils import oproj
-import noiseplanet.matching.model.route as rt
+import noiseplanet.matcher.model.route as rt
 
 
 def match_nearest_edge(graph, track):
@@ -61,7 +61,7 @@ def match_nearest_edge(graph, track):
     -------
         >>> import osmnx as ox
         >>> import numpy as np
-        >>> from noiseplanet.matching.model.leuven import leuven
+        >>> from noiseplanet.matcher.model.leuven import leuven
         >>> place_name = "2e Arrondissement, Lyon, France"
         >>> distance = 1000  # meters
         >>> graph = ox.graph_from_address(place_name, distance)

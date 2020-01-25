@@ -7,26 +7,30 @@ Created on Sat Jan 18 23:05:29 2020
 
 from setuptools import setup, find_packages
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
 
+def readme_data():
+    with open("README.md", "r") as fh:
+        long_description = fh.read()
+    return long_description
 
 
 setup(name='noiseplanet',
-        version='0.1',
-        description='GeoJson map matching from Noise Planet data server.',
-        long_description=long_description,
-        long_description_content_type="text/markdown",
-        url='https://github.com/arthurdjn/noise_capture',
-        author='Arthur Dujardin',
-        author_email='arthur.dujardin@ensg.eu',
-        license='Apache License-2.0',
+        version = '0.1',
+        description = 'GeoJson map matching from Noise Planet data server.',
+        long_description = readme_data(),
+        long_description_content_type = "text/markdown",
+        url = 'https://github.com/arthurdjn/noiseplanet',
+        author = 'Arthur Dujardin, Samuel Mermet',
+        author_email = 'arthur.dujardin@ensg.eu',
+        license = 'Apache License-2.0',
 
-        install_requires = ['numpy', 'pandas', 'json', 'osmnx', 'folium', 'matplotlib', 'webbrowser', 'pyproj', 'leuvenmapmatching'],
-        packages=find_packages(),
-        namespace_packages=['noiseplanet'],
-        zip_safe=False,
-        classifiers=[
+        install_requires = ['numpy', 'pandas', 'json', 'osmnx', 
+                        'pyproj', 'leuvenmapmatching',
+                        'networkx', 'zipfile'],
+        packages = find_packages(),
+        namespace_packages = ['noiseplanet'],
+        zip_safe  =False,
+        classifiers = [
         # How mature is this project? Common values are
         #   3 - Alpha
         #   4 - Beta
@@ -42,6 +46,7 @@ setup(name='noiseplanet',
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
         'Programming Language :: Python :: 3',
-    ])
+        ]
+    )
 
 

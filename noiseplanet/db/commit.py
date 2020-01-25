@@ -6,66 +6,15 @@
 
 """
 DBConnect Module.
-
-Interaction DataFrame - DataBase.
+Add DataFrame/Values to a DataBase.
 """
 
-import sqlite3
-from sqlite3 import Error
 import numpy as np
 import pandas as pd
 from ast import literal_eval
 
-
-def connect(db_file):
-    """
-    Create a DataBase connection to a SQLite DataBase.
-
-    Parameters
-    ----------
-    db_file : String
-        Path to the DataBase file. If the DataBase does not exists, a new one is created.
-
-    Returns
-    -------
-    conn : SQLite3 Connection
-        Connection to the DataBase db_file.
-    """
-    
-    conn = None
-    try:
-        conn = sqlite3.connect(db_file)
-        print('SQLite3 version :', sqlite3.version)
-    except Error as e:
-        print(e)
-    
-    return conn
- 
-
-def database_query(conn, query):
-    """
-    Request a query in a database.
-
-    Parameters
-    ----------
-    conn : SQLite3 Connection
-        Connection to the DataBase where the query is requested.
-    create_table_sql : String
-        SQL query to create a table in.
-
-    Returns
-    -------
-    None.
-    """
-    try:
-        cur = conn.cursor()
-        cur.execute(query)
-        conn.commit()
-    except Error as e:
-        print('Error : {0}'.format(e))
-      
-
-
+from noiseplanet import utils, io
+from noiseplanet.db.connect import database_query
 
 def df_to_table(conn, table_name, df):
     """
@@ -105,6 +54,75 @@ def df_to_table(conn, table_name, df):
     sql += "VALUES(" + ','.join(['?']*len(df.keys())) + ")"
     database_query(conn, sql)
     
+
+def geojson_to_table(conn, table_name, *file_geojson):
+    """
+    Add a GeoJson file to the table in a SQLite DataBase.
+
+    Parameters
+    ----------
+    conn : SQLite3 Connection
+        The connection to the DataBase.
+    table_name : String
+        Name of the DataBase's table where the DataFrame will be pasted.
+    *file_geojson : String
+        GeoJson files to add.
+
+    Returns
+    -------
+    None.
+    """
+    
+    for file in file_geojson:
+        geojson = io.open_geojson(file)
+        df = utils.geojson_to_df(geojson, normalize_header=True)
+        df_to_table(conn, 'point', df)
+    
+    
+def properties_to_table(conn, table_name, *file_properties):
+    """
+    Add a properties file to the table in a SQLite DataBase.
+
+    Parameters
+    ----------
+    conn : SQLite3 Connection
+        The connection to the DataBase.
+    table_name : String
+        Name of the DataBase's table where the DataFrame will be pasted.
+    *file_properties : String
+        Properties files to add.
+
+    Returns
+    -------
+    None.
+    """
+    
+    for file_prop in file_properties:
+        properties = io.open_properties(file_prop)
+        df = pd.DataFrame(data=properties, index=[0])
+        df_to_table(conn, 'meta', df)
+
+def track_to_db(conn, dir_track):
+    """
+    Add tracks informations in a SQLite DataBase.
+
+    Parameters
+    ----------
+    conn : SQLite3 Connection
+        The connection to the DataBase.
+    dir_track : String
+        Path to the track files.
+
+    Returns
+    -------
+    None.
+    """
+    
+    file_geojson = io.open_files(dir_track, ext='geojson')
+    file_properties = io.open_files(dir_track, ext='properties')
+    properties_to_table(conn, 'meta', *file_properties)
+    geojson_to_table(conn, 'point', *file_geojson)
+
 
 def select_to_df(conn, query):
     """
@@ -149,5 +167,10 @@ def select_to_df(conn, query):
             df[key] = evaluated_col
     
     return df
+
+
+
+
+
 
 

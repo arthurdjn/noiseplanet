@@ -1,10 +1,21 @@
-
+========================================
 Welcome to Noise Planet's documentation!
 ========================================
 
 
 Getting Started
 ===============
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+Modules
+=======
 
 .. automodule:: noiseplanet.main
     :members:
@@ -45,13 +56,3 @@ Getting Started
    :maxdepth: 2
    :caption: Contents:
 
-Test
-----
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

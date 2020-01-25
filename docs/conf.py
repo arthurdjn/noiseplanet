@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 autodoc_mock_imports = ['numpy', 'pandas', 'json', 'osmnx', 'folium', 'matplotlib', 
                         'webbrowser', 'pyproj', 'leuvenmapmatching',
-                        'networkx']
+                        'networkx', 'zipfile']
 
 master_doc = 'index'
 # -- Project information -----------------------------------------------------
