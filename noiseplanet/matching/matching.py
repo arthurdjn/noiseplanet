@@ -191,15 +191,13 @@ def match_from_geojsons(dirname, out_dirname=".", method="hmm", log=True):
     for i, file in enumerate(files):
         if log:
             print('--------------------------',
-                  '\nTrack n° {0}'.format(i))
+                  '\nTrack n° {0}'.format(i))   
             
-        match_from_geojson(file, out_dirname=out_dirname, method=method, log=log)
-            
-        # try:
-        #     match_from_geojson(file, out_dirname=out_dirname, method=method, log=log)
-        # except Exception as e:
-        #     print('Exception Error : {0}'.format(e))
-        #     continue
+        try:
+            match_from_geojson(file, out_dirname=out_dirname, method=method, log=log)
+        except Exception as e:
+            print('Exception Error : {0}'.format(e))
+            continue
 
 
 

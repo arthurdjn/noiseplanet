@@ -26,12 +26,12 @@ def hexbin_grid(bbox, side_length=1, proj_init=None, proj_out=None):
     side_length : float, optional
         Side length of the hexagons. The default is 1.
     proj_init : String, optional
-        If working with coordinates and the hexgrid need to be calculated in another
-        coordinates system, paste the starting coordinates system.
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_init refers to the starting coordinates system.
         The default is None.
     proj_out : String, optional
-        If working with coordinates and the hexgrid need to be calculated in another
-        coordinates system, paste the ending coordinates system.
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_out refers to the ending coordinates system.
         The default is None.
         
         Example :
@@ -140,26 +140,63 @@ def hexbin_grid(bbox, side_length=1, proj_init=None, proj_out=None):
     return polygons
 
 
-
-def get_size_hexgrid(bbox, side_length):
-    startx, starty, endx, endy = bbox[0], bbox[1], bbox[2], bbox[3]
-    # width & height of the bbox
-    w = abs(endx - startx)
-    h = abs(endy - starty)
-    # parameters of the hexagon
-    R = 0.5 * side_length * 1/(np.sin(np.deg2rad(30)))
-    r = R * np.cos(np.deg2rad(30))
-    # number of hexagons (vertivcal & horizontal)
-    Nw = int((w + r)//(2*r)) + 1
-    Nh = int((h + R)//(R + side_length/2)) + 1
-    
-    shorter_lines = 0 if (w > 2*(Nw - 1)*r) else 1
-    
-    return Nw, Nh, shorter_lines
+# =============================================================================
+#   DEPRECATED
+# =============================================================================
+# def get_size_hexgrid(bbox, side_length):
+#     startx, starty, endx, endy = bbox[0], bbox[1], bbox[2], bbox[3]
+#     # width & height of the bbox
+#     w = abs(endx - startx)
+#     h = abs(endy - starty)
+#     # parameters of the hexagon
+#     R = 0.5 * side_length * 1/(np.sin(np.deg2rad(30)))
+#     r = R * np.cos(np.deg2rad(30))
+#     # number of hexagons (vertivcal & horizontal)
+#     Nw = int((w + r)//(2*r)) + 1
+#     Nh = int((h + R)//(R + side_length/2)) + 1
+#  
+#     shorter_lines = 0 if (w > 2*(Nw - 1)*r) else 1
+#  
+#     return Nw, Nh, shorter_lines
+# =============================================================================
 
 
 def cartesian_to_hex(point, origin=(0, 0), side_length=1,
                      proj_init=None, proj_out=None):
+    """
+    Convert cartesian coordinates to hexagonal coordinates system.
+
+    Parameters
+    ----------
+    point : Tuple
+        Point in cartesian coordinates to convert.
+    origin : Tuple, optional
+        Origin of the hexagonal coordinates system. 
+        The default is (0, 0).
+    side_length : Float, optional
+        Side length of the hexagons. 
+        The default is 1.
+    proj_init : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_init refers to the starting coordinates system.
+        The default is None.
+    proj_out : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_out refers to the ending coordinates system.
+        The default is None.
+        
+        Example :
+            If the bbox is in geographic coordinates, but the hexgrid should be computed
+            on the web mercator system. 
+            Then,
+            >>> proj_init="epsg:4326"
+            >>> proj_out="epsg:3857"
+
+    Returns
+    -------
+    hex_coord : Tuple
+        Point's coordinates in hexagonal coordinates system.
+    """
     
     if proj_init != proj_out:
         transformer = Transformer.from_proj(Proj(init=proj_init), Proj(init=proj_out))
@@ -176,7 +213,42 @@ def cartesian_to_hex(point, origin=(0, 0), side_length=1,
 
 def hex_to_cartesian(hexa, origin=(0, 0), side_length=1,
                      proj_init=None, proj_out=None):
+    """
+    Convert hexagonal coordinates to cartesian.
+
+    Parameters
+    ----------
+    hexa : Tuple
+        Hexagonal coordinates.
+    origin : Tuple, optional
+        Origin of the hexagonal coordinates system. 
+        The default is (0, 0).
+    side_length : Float, optional
+        Side length of the hexagons. 
+        The default is 1.
+    proj_init : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_init refers to the starting coordinates system.
+        The default is None.
+    proj_out : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_out refers to the ending coordinates system.
+        The default is None.
         
+        Example :
+            If the bbox is in geographic coordinates, but the hexgrid should be computed
+            on the web mercator system. 
+            Then,
+            >>> proj_init="epsg:4326"
+            >>> proj_out="epsg:3857"
+
+
+    Returns
+    -------
+    point : Tuple
+        Hexagon's coordinates in cartesian.
+    """
+    
     mat = np.array([[np.sqrt(3), np.sqrt(3)/2],
                     [0         , 3/2         ]])
     hex_coord = np.array(hexa)
@@ -190,9 +262,48 @@ def hex_to_cartesian(hexa, origin=(0, 0), side_length=1,
     return cart_coord + origin
 
 
-def hexs_to_cartesians(Q, R, side_length=1, origin=(0, 0), 
+def hexs_to_cartesians(Q, R, origin=(0, 0), side_length=1, 
                        proj_init=None, proj_out=None):
+    """
+    Convert a list of hexagonal coordinates to cartesian.
+
+    Parameters
+    ----------
+    Q : numpy 1D array
+        Columns indexes of hexagons coordinates.
+    R : numpy 1D array
+        Rows indexes of hexagons coordinates.
+    origin : Tuple, optional
+        Origin of the hexagonal coordinates system. 
+        The default is (0, 0).
+    side_length : Float, optional
+        Side length of the hexagons. 
+        The default is 1.
+    proj_init : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_init refers to the starting coordinates system.
+        The default is None.
+    proj_out : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_out refers to the ending coordinates system.
+        The default is None.
         
+        Example :
+            If the bbox is in geographic coordinates, but the hexgrid should be computed
+            on the web mercator system. 
+            Then,
+            >>> proj_init="epsg:4326"
+            >>> proj_out="epsg:3857"
+
+
+    Returns
+    -------
+    points : numpy 2D array
+        Hexagons points in cartesian coordinates.
+    """    
+    
+    assert len(Q) == len(R), 'The dimension of Q and R indexes should be the same'    
+    
     mat = np.array([[np.sqrt(3), np.sqrt(3)/2],
                     [0         , 3/2         ]])
     
@@ -213,7 +324,45 @@ def hexs_to_cartesians(Q, R, side_length=1, origin=(0, 0),
 
 def cartesians_to_hexs(X, Y, origin=(0, 0), side_length=1,
                        proj_init=None, proj_out=None):
-   
+    """
+    Convert a list of cartesian points to hexagonal coordinates.
+
+    Parameters
+    ----------
+    X : numpy 1D array
+        X indexes of cartesian points.
+    Y : numpy 1D array
+        Y indexes of cartesian points.
+    origin : Tuple, optional
+        Origin of the hexagonal coordinates system. 
+        The default is (0, 0).
+    side_length : Float, optional
+        Side length of the hexagons. 
+        The default is 1.
+    proj_init : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_init refers to the starting coordinates system.
+        The default is None.
+    proj_out : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_out refers to the ending coordinates system.
+        The default is None.
+        
+        Example :
+            If the bbox is in geographic coordinates, but the hexgrid should be computed
+            on the web mercator system. 
+            Then,
+            >>> proj_init="epsg:4326"
+            >>> proj_out="epsg:3857"
+
+    Returns
+    -------
+    hexagons : numpy 2D array
+        Cartesian points in hexagonal coordinates.
+    """
+    # Test if the length of X and Y are equals
+    assert len(X) == len(Y), 'The dimension of X and Y should be the same'
+    
     if proj_init != proj_out:
         transformer = Transformer.from_proj(Proj(init=proj_init), Proj(init=proj_out))
         X, Y = transformer.transform(X, Y)
@@ -227,8 +376,41 @@ def cartesians_to_hexs(X, Y, origin=(0, 0), side_length=1,
 
 
 
-def nearest_hexagon(point, origin=(0, 0), side_length=1, 
-                    proj_init=None, proj_out=None):
+def nearest_hexagon(point, origin=(0, 0), side_length=1, proj_init=None, proj_out=None):
+    """
+    Get the nearest hexagon center from a cartesian point.
+
+    Parameters
+    ----------
+    point : Tuple
+        Cartesian point.
+    origin : Tuple, optional
+        Origin of the hexagonal coordinates system. 
+        The default is (0, 0).
+    side_length : Float, optional
+        Side length of the hexagons. 
+        The default is 1.
+    proj_init : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_init refers to the starting coordinates system.
+        The default is None.
+    proj_out : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_out refers to the ending coordinates system.
+        The default is None.
+        
+        Example :
+            If the bbox is in geographic coordinates, but the hexgrid should be computed
+            on the web mercator system. 
+            Then,
+            >>> proj_init="epsg:4326"
+            >>> proj_out="epsg:3857"
+
+    Returns
+    -------
+    hexagon_center : Tuple
+        Hexagonal coordinates of the nearest hexagon from point.
+    """
     
     if proj_init != proj_out:
         transformer = Transformer.from_proj(Proj(init=proj_init), Proj(init=proj_out))
@@ -267,6 +449,43 @@ def nearest_hexagon(point, origin=(0, 0), side_length=1,
 
 
 def nearest_hexagons(X, Y, origin=(0, 0), side_length=1, proj_init=None, proj_out=None):
+    """
+    Get the nearest hexagons centers from a list of cartesian points.
+
+    Parameters
+    ----------
+    X : numpy 1D array
+        X indexes of cartesian points.
+    Y : numpy 1D array
+        Y indexes of cartesian points.
+    origin : Tuple, optional
+        Origin of the hexagonal coordinates system. 
+        The default is (0, 0).
+    side_length : Float, optional
+        Side length of the hexagons. 
+        The default is 1.
+    proj_init : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_init refers to the starting coordinates system.
+        The default is None.
+    proj_out : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_out refers to the ending coordinates system.
+        The default is None.
+        
+        Example :
+            If the bbox is in geographic coordinates, but the hexgrid should be computed
+            on the web mercator system. 
+            Then,
+            >>> proj_init="epsg:4326"
+            >>> proj_out="epsg:3857"
+
+    Returns
+    -------
+    hexagons_center : numpy 2D array
+        Cartesian points in hexagonal coordinates.
+    """
+    
     
     if proj_init != proj_out:
         transformer = Transformer.from_proj(Proj(init=proj_init), Proj(init=proj_out))
@@ -313,6 +532,41 @@ def nearest_hexagons(X, Y, origin=(0, 0), side_length=1, proj_init=None, proj_ou
 
 def hexagon_coordinates(center, side_length=1, r=0.8660254037844389, R=1.0000000000000002,
                         proj_init=None, proj_out=None):
+    """
+    Get the hexagon's coordinates points from its center.
+
+    Parameters
+    ----------
+    center : Tuple
+        Center of the hexagon, in cartesian coordinates.
+    side_length : Float, optional
+        Side length of the hexagon. 
+        The default is 1.
+    r : Float, optional
+        Intern radius. The default is 0.8660254037844389.
+    R : Float, optional
+        Extern radius. The default is 1.0000000000000002.
+    proj_init : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_init refers to the starting coordinates system.
+        The default is None.
+    proj_out : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_out refers to the ending coordinates system.
+        The default is None.
+        
+        Example :
+            If the bbox is in geographic coordinates, but the hexgrid should be computed
+            on the web mercator system. 
+            Then,
+            >>> proj_init="epsg:4326"
+            >>> proj_out="epsg:3857"
+
+    Returns
+    -------
+    hexagon : List
+        List of points belonging to the hexagon.
+    """
     
     if side_length != 1 and r == 0.8660254037844389 and  R == 1.0000000000000002:
         R = 0.5 * side_length * 1/(np.sin(np.deg2rad(30)))
@@ -353,6 +607,43 @@ def hexagon_coordinates(center, side_length=1, r=0.8660254037844389, R=1.0000000
 
 def hexagons_coordinates(X, Y, side_length=1, r=0.8660254037844389, R=1.0000000000000002,
                          proj_init=None, proj_out=None):
+    """
+    Get the hexagons' coordinates points from a list of center.
+
+    Parameters
+    ----------
+    X : numpy 1D array
+        X indexes of cartesian center.
+    Y : numpy 1D array
+        Y indexes of cartesian center.
+    side_length : Float, optional
+        Side length of the hexagon. 
+        The default is 1.
+    r : Float, optional
+        Intern radius. The default is 0.8660254037844389.
+    R : Float, optional
+        Extern radius. The default is 1.0000000000000002.
+    proj_init : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_init refers to the starting coordinates system.
+        The default is None.
+    proj_out : String, optional
+        If working with coordinates and the hexagons need to be calculated in another
+        coordinates system, proj_out refers to the ending coordinates system.
+        The default is None.
+        
+        Example :
+            If the bbox is in geographic coordinates, but the hexgrid should be computed
+            on the web mercator system. 
+            Then,
+            >>> proj_init="epsg:4326"
+            >>> proj_out="epsg:3857"
+
+    Returns
+    -------
+    hexagons : List
+        List of hexagons, composed by their coordinates.
+    """
     
     if side_length != 1 and r == 0.8660254037844389 and  R == 1.0000000000000002:
         R = 0.5 * side_length * 1/(np.sin(np.deg2rad(30)))
