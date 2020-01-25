@@ -22,7 +22,7 @@ setup(name='noiseplanet',
         author_email='arthur.dujardin@ensg.eu',
         license='Apache License-2.0',
         
-        install_requires = ['pandas', 'osmnx', 'json'],
+        install_requires = ['numpy', 'pandas', 'osmnx', 'json'],
         packages=find_packages(),
         namespace_packages=['noiseplanet'],
         zip_safe=False,
