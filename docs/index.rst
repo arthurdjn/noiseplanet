@@ -21,18 +21,18 @@ Dependencies
 Packages
 ========
 
-* numpy,
-* pandas,
-* json,
-* osmnx,
-* leuvenmapmatching, *KU Leuven - DTAI Research Group, Sirris - Elucidata Group.*
+* **numpy,**
+* **pandas,**
+* **json,**
+* **osmnx,**
+* **leuvenmapmatching,** *KU Leuven - DTAI Research Group, Sirris - Elucidata Group.*
 
 Optional packages
 =================
 
-* matplotlib,
-* folium,
-* sqlite3.
+* **matplotlib,**
+* **folium,**
+* **sqlite3.**
 
 Note that these packages are optional if you don't want to visualize the resulting maps. SQLite3 is used to stock all the informations of a geojson tracks or polygon into an SQL database.
 
@@ -59,18 +59,33 @@ Structure
 
 **NoisePlanet** is composed by internal sub-packages:
 
-* matcher lets you correct tracks and match it to the Open Street Map network,
-* utils mainly handles conversion from geojson, metadata etc. to DataFrame,
-* io handles reading and writing files,
-* db lets you access a SQLite3 database.
-* ui is used to generate Leaflet maps,
+* **matcher** lets you correct tracks and match it to the Open Street Map network,
+* **utils** mainly handles conversion from geojson, metadata etc. to DataFrame,
+* **io** handles reading and writing files,
+* **db** lets you access a SQLite3 database.
+* **ui** is used to generate Leaflet maps,
 
 =======
 Example
 =======
 
+Map Matching
+============
 
+The noiseplanet package provides different tools for matching a track to the Open Street Map network.
 
+* matching to the **nearest edge**,
+* **hmm** based matching. To match a track, composed by latitudes and longitudes, use :
+
+.. image:: ../img/track_hmm.png
+   :height: 100
+   :width: 200
+   :alt: alternate text
+
+.. image:: ../img/track_nearest.png
+   :height: 100
+   :width: 200
+   :alt: alternate text
 
 ========
 Packages
