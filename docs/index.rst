@@ -14,11 +14,12 @@ Made in collaboration with the *École Nationale des Sciences Géographiques.*
 **Citation :** Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche.*
 
 
-=============
+============
 Dependencies
 ============
 
-This module use several packages :
+Packages
+========
 
 * numpy,
 * pandas,
@@ -26,7 +27,8 @@ This module use several packages :
 * osmnx,
 * leuvenmapmatching, *KU Leuven - DTAI Research Group, Sirris - Elucidata Group.*
 
-For plotting and interface, the following packages are used :
+Optional packages
+=================
 
 * matplotlib,
 * folium,
@@ -34,9 +36,9 @@ For plotting and interface, the following packages are used :
 
 Note that these packages are optional if you don't want to visualize the resulting maps. SQLite3 is used to stock all the informations of a geojson tracks or polygon into an SQL database.
 
-===========
-Instalation
-===========
+============
+Installation
+============
 
 To install, use :
 
@@ -46,13 +48,29 @@ If this doesn't work, clone the repository, and in the noiseplanet folder, use :
 
 ``pip install .``
 
+===========
+Development
+===========
+
+If you want to participate to the improvement of this project, clone the repository and open it as a project. We used spyder to create the packages and modules.
+
+Structure
+=========
+
+**NoisePlanet** is composed by internal sub-packages:
+
+* matcher lets you correct tracks and match it to the Open Street Map network,
+* utils mainly handles conversion from geojson, metadata etc. to DataFrame,
+* io handles reading and writing files,
+* db lets you access a SQLite3 database.
+* ui is used to generate Leaflet maps,
+
 =======
 Example
 =======
 
-===========
-Development
-===========
+
+
 
 ========
 Packages
