@@ -6,5 +6,5 @@ Created on Wed Dec 18 22:16:19 2019
 """
 
 from noiseplanet.matcher.model.route import graph_from_track, route_from_track
-from noiseplanet.matcher.matcher import *
+from noiseplanet.matcher.matching import *
 from noiseplanet.matcher.datacleaner import clean_data

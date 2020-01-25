@@ -17,7 +17,7 @@ import webbrowser
 import folium
 import numpy as np
 
-import noiseplanet.matching as matching
+import noiseplanet.matcher as matching
 
 
 def linesProjection(track, track_corr):

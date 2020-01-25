@@ -7,12 +7,11 @@ Getting Started
 ===============
 
 
-Indices and tables
-==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
 
 Modules
 =======
@@ -20,19 +19,19 @@ Modules
 .. automodule:: noiseplanet.main
     :members:
 
-.. automodule:: noiseplanet.matching.datacleaner
+.. automodule:: noiseplanet.matcher.datacleaner
     :members:
 
-.. automodule:: noiseplanet.matching.matching
+.. automodule:: noiseplanet.matcher.matching
     :members:
 
-.. automodule:: noiseplanet.matching.model.route
+.. automodule:: noiseplanet.matcher.model.route
     :members:
 
-.. automodule:: noiseplanet.matching.model.nearest
+.. automodule:: noiseplanet.matcher.model.nearest
     :members:
 
-.. automodule:: noiseplanet.matching.model.leuven
+.. automodule:: noiseplanet.matcher.model.leuven
     :members:
 
 .. automodule:: noiseplanet.utils.functions
@@ -47,12 +46,13 @@ Modules
 .. automodule:: noiseplanet.io.inputoutput
     :members:
 
-.. automodule:: noiseplanet.db.dbconnect
+.. automodule:: noiseplanet.db.connect
     :members:
 
 
+Indices and tables
+==================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
