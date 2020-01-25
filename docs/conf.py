@@ -18,7 +18,7 @@ autodoc_mock_imports = ['numpy', 'pandas', 'json', 'osmnx', 'folium', 'matplotli
                         'webbrowser', 'pyproj', 'leuvenmapmatching',
                         'networkx']
 
-
+master_doc = 'index'
 # -- Project information -----------------------------------------------------
 
 project = 'Noise Planet'
