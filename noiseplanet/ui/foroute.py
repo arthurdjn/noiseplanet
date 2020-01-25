@@ -31,7 +31,7 @@ def linesProjection(track, track_corr):
     return lines
 
 
-def plot_graph(graph, track, track_corr=[],
+def plot_graph(track, track_corr=[],
              track_color="black", track_corr_color="darkcyan",
              route_color="black", route_corr_color="darkcyan",
              track_size=20, track_corr_size=20,
@@ -39,10 +39,63 @@ def plot_graph(graph, track, track_corr=[],
              proj=False, proj_color="skyblue", proj_size=1, proj_alpha=1,
              route_corr=np.array([[None, None]]),
              route_size=4, route_corr_size=4, route_opacity=.6,
-             title_fig="", title_color="#999999", title_fontweight="bold",
-             save=True,
-             filename="my_track.png", dpi=300):
+             title_fig="", title_color="#999999", title_fontweight="bold"
+             ):
+    """
+    Create a matplotlib graph of the map matching algorithm.
 
+    Parameters
+    ----------
+    graph : NetworkX MultiDiGraph
+        Graph of the area.
+    track : TYPE
+        DESCRIPTION.
+    track_corr : TYPE, optional
+        DESCRIPTION. The default is [].
+    track_color : TYPE, optional
+        DESCRIPTION. The default is "black".
+    track_corr_color : TYPE, optional
+        DESCRIPTION. The default is "darkcyan".
+    route_color : TYPE, optional
+        DESCRIPTION. The default is "black".
+    route_corr_color : TYPE, optional
+        DESCRIPTION. The default is "darkcyan".
+    track_size : TYPE, optional
+        DESCRIPTION. The default is 20.
+    track_corr_size : TYPE, optional
+        DESCRIPTION. The default is 20.
+    track_marker : TYPE, optional
+        DESCRIPTION. The default is "x".
+    track_corr_marker : TYPE, optional
+        DESCRIPTION. The default is "x".
+    proj : TYPE, optional
+        DESCRIPTION. The default is False.
+    proj_color : TYPE, optional
+        DESCRIPTION. The default is "skyblue".
+    proj_size : TYPE, optional
+        DESCRIPTION. The default is 1.
+    proj_alpha : TYPE, optional
+        DESCRIPTION. The default is 1.
+    route_corr : TYPE, optional
+        DESCRIPTION. The default is np.array([[None, None]]).
+    route_size : TYPE, optional
+        DESCRIPTION. The default is 4.
+    route_corr_size : TYPE, optional
+        DESCRIPTION. The default is 4.
+    route_opacity : TYPE, optional
+        DESCRIPTION. The default is .6.
+    title_fig : TYPE, optional
+        DESCRIPTION. The default is "".
+    title_color : TYPE, optional
+        DESCRIPTION. The default is "#999999".
+    title_fontweight : TYPE, optional
+        DESCRIPTION. The default is "bold".
+
+    Returns
+    -------
+    None.
+    """
+    
     fig, ax = ox.plot_graph(graph, node_color="skyblue", node_alpha=.5, node_size=20, annotate=True, margin=0, show=False, close=False)
     plt.title(title_fig, color=title_color, fontweight=title_fontweight)
 
@@ -58,11 +111,8 @@ def plot_graph(graph, track, track_corr=[],
         lines_proj_HMM = linesProjection(track, track_corr)
         lc = mc.LineCollection(lines_proj_HMM, colors=proj_color, alpha=proj_alpha, linewidths=proj_size)
         ax.add_collection(lc)
-
-    plt.show()
-
-    if save:
-        plt.savefig(filename, dpi=dpi)
+        
+    return fig, ax
 
 
 def plot_html(track, track_corr=[],

@@ -70,6 +70,7 @@ def test_match():
     # print('track_corr {0}\nroute_corr {1}\nedgeid {2}\nstats {3}'.format(track_corr, route_corr, edgeid, stats))
 
 def test_match_from_geojson(dirname, out_dirname=".", method="nearest", log=True):
+    print('\nTest match_from_geojson(dirname, out_dirname=".", method="nearest", log=True)')
     matcher.match_from_geojsons(dirname, out_dirname=out_dirname, method=method, log=log)
 
 
