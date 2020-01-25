@@ -19,7 +19,6 @@ def clean_data(df):
     -------
     df : pandas DataFrame
         Cleaned DataFrame.
-
     """
     # Fill None values by interpolation
     # try:

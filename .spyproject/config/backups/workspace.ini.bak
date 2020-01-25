@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['noiseplanet\\utils\\functions.py', 'noiseplanet\\db\\dbconnect.py', 'noiseplanet\\matching\\datacleaner.py', 'noiseplanet\\main.py', 'test\\functions_test.py', 'noiseplanet\\matching\\matching.py']
+recent_files = ['noiseplanet\\matching\\datacleaner.py', 'noiseplanet\\matching\\matching.py', 'noiseplanet\\ui\\fohex.py', 'noiseplanet\\ui\\foroute.py', 'noiseplanet\\utils\\hexgrid.py', 'noiseplanet\\matching\\__init__.py']
 

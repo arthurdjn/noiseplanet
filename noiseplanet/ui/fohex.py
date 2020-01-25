@@ -10,12 +10,28 @@ import folium
 import numpy as np
 import webbrowser
 
-import json
-
 from noiseplanet.utils import hexgrid
 
 
-def hexgrid_folium(m, bbox, side_length=50000):
+def hexgrid_folium(folium_map, bbox, side_length=50000):
+    """
+    Add a grid of hexagons to a folium map.
+
+    Parameters
+    ----------
+    folium_map : Folium Map
+        Map on which the hexagonal grid will be added.
+    bbox : Tuple
+        Box of the area to generate the hexagons.
+        Format : Lower X, Lower Y, Upper X, Upper Y.
+    side_length : Float, optional
+        Side length of the hexagons. The default is 50000.
+
+    Returns
+    -------
+    folium_map : Folium Map
+        Map with the added hexagons.
+    """
 
     # Compute the hexbin grid in the webmercator system to have visually equal hexbin ...
     proj_init="epsg:4326"
@@ -25,7 +41,6 @@ def hexgrid_folium(m, bbox, side_length=50000):
     print("size grid :", len(grid))
 
     # ... and reproject each hexagonal in the geographic system
-    # save in local the geojson
     features = []
     
     for hexagon in grid:
@@ -45,7 +60,7 @@ def hexgrid_folium(m, bbox, side_length=50000):
                     }
 
         color = 'skyblue'
-        gj = folium.GeoJson(geojson,
+        folium_geojson = folium.GeoJson(geojson,
                             style_function=lambda feature,
                             color=color: {
                                           'fillColor': color,
@@ -55,50 +70,63 @@ def hexgrid_folium(m, bbox, side_length=50000):
                                           'fillOpacity': 0.55,
                                          })
 
-        # m.add_child(gj)
-
-    # folium.CircleMarker(location=[bbox[0], bbox[1]],
-    #                 radius=5,
-    #                 weight=1,
-    #                 color="red",
-    #                 fill=True,
-    #                 fill_opacity=1).add_to(m)
-
-    # folium.CircleMarker(location=[bbox[2], bbox[3]],
-    #                 radius=5,
-    #                 weight=1,
-    #                 color="red",
-    #                 fill=True,
-    #                 fill_opacity=1).add_to(m)
+        folium_map.add_child(folium_geojson)
+  
+    return folium_map
 
 
-    # m.save("my_hexbin_map2.html")
-    # webbrowser.open("my_hexbin_map2.html", new=2)  # open in new tab
+# =============================================================================
+#   DEPRECATED
+# =============================================================================
+# def add_hexagons_folium(foloium_map, hexagons): 
+#     for hexagon in hexagons:
+#         geo_json = {"type": "FeatureCollection",
+#                     "properties":{
+#                             "lower_left": 0,
+#                             "upper_right": 0
+#                             },
+#                     "features": [{
+#                             "type":"Feature",
+#                             "geometry":{
+#                                     "type":"Polygon",
+#                                     "coordinates": [hexagon]
+#                                     }
+#                             }]
+#                     }
+#         color = 'skyblue'
+#         gj = folium.GeoJson(geo_json,
+#                             style_function=lambda feature,
+#                             color=color: {
+#                                           'fillColor': color,
+#                                           'color':"black",
+#                                           'weight': 2,
+#                                           'dashArray': '5, 5',
+#                                           'fillOpacity': 0.55,
+#                                          }
+#         foloium_map.add_child(gj)   
+#     return foloium_map
 
-    geojsons = {"type": "FeatureCollection",
-                "properties":{
-                        "lower_left": (bbox[0], bbox[1]),
-                        "upper_right": (bbox[2], bbox[3])
-                        },
-                "features": features 
-                }
 
-    # Write the geojson
-    outname = 'hexgrid_lyon' + '.geojson'
+def add_polygon_folium(foloium_map, *polygon):
+    """
+    Add polygon to a folium map from their coordinates.
+
+    Parameters
+    ----------
+    foloium_map : Folium Map
+        Map where poygons are added.
+    *polygon : List
+        Polygons to add to the map.
+        A polygon is a list of points, each points composed by lat, lon coordinates.
+
+    Returns
+    -------
+    foloium_map : Folium Map
+        Map with the polygons.
+    """
     
-    print("saving...")
-    
-    with open(outname, 'w') as f:
-        json.dump(geojsons, f)
-
-
-
-    # return m
-
-
-def add_hexagons_folium(m, hexagons):
-    for hexagon in hexagons:
-        geo_json = {"type": "FeatureCollection",
+    for poly in polygon:
+        geojson = {"type": "FeatureCollection",
                     "properties":{
                             "lower_left": 0,
                             "upper_right": 0
@@ -107,13 +135,13 @@ def add_hexagons_folium(m, hexagons):
                             "type":"Feature",
                             "geometry":{
                                     "type":"Polygon",
-                                    "coordinates": [hexagon]
+                                    "coordinates": [poly]
                                     }
                             }]
                     }
 
         color = 'skyblue'
-        gj = folium.GeoJson(geo_json,
+        folium_geojson = folium.GeoJson(geojson,
                             style_function=lambda feature,
                             color=color: {
                                           'fillColor': color,
@@ -123,26 +151,21 @@ def add_hexagons_folium(m, hexagons):
                                           'fillOpacity': 0.55,
                                          })
 
-        m.add_child(gj)
-
-    m.save("my_hexbin_map.html")
-    webbrowser.open("my_hexbin_map.html", new=2)  # open in new tab
-
-
-
-
+        foloium_map.add_child(folium_geojson)
+    
+    return foloium_map
 
 
 
 
 if __name__ == "__main__":
     # 1/ Create a grid
-    m = folium.Map(zoom_start = 5, location=[55, 0])
+    foloium_map = folium.Map(zoom_start = 5, location=[55, 0])
 
     lower_left = [45.743860, 4.821815]
     upper_right = [45.763263, 4.858980]
     bbox = (lower_left[1], lower_left[0], upper_right[1], upper_right[0])
-    hexgrid_folium(m, bbox, side_length=15)
+    foloium_map = hexgrid_folium(foloium_map, bbox, side_length=15)
 
 
     proj_init="epsg:4326"
@@ -166,10 +189,11 @@ if __name__ == "__main__":
                                     proj_init=proj_init, proj_out=proj_out)
 
 
-    # add_hexagons_folium(m, hexagons)
+    foloium_map = add_polygon_folium(foloium_map, *hexagons)
 
 
-
+    foloium_map.save("my_hexbin_map2.html")
+    webbrowser.open("my_hexbin_map2.html", new=2)  # open in new tab
 
 
 
