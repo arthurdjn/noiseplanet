@@ -80,38 +80,6 @@ def hexgrid_folium(folium_map, bbox, side_length=50000):
     return folium_map
 
 
-# =============================================================================
-#   DEPRECATED
-# =============================================================================
-# def add_hexagons_folium(foloium_map, hexagons): 
-#     for hexagon in hexagons:
-#         geo_json = {"type": "FeatureCollection",
-#                     "properties":{
-#                             "lower_left": 0,
-#                             "upper_right": 0
-#                             },
-#                     "features": [{
-#                             "type":"Feature",
-#                             "geometry":{
-#                                     "type":"Polygon",
-#                                     "coordinates": [hexagon]
-#                                     }
-#                             }]
-#                     }
-#         color = 'skyblue'
-#         gj = folium.GeoJson(geo_json,
-#                             style_function=lambda feature,
-#                             color=color: {
-#                                           'fillColor': color,
-#                                           'color':"black",
-#                                           'weight': 2,
-#                                           'dashArray': '5, 5',
-#                                           'fillOpacity': 0.55,
-#                                          }
-#         foloium_map.add_child(gj)   
-#     return foloium_map
-
-
 def add_polygon_folium(foloium_map, *polygon):
     """
     Add polygon to a folium map from their coordinates.

@@ -127,58 +127,111 @@ def plot_html(track, track_corr=[],
              file_name="my_map.html", save=True
              ):
     """
-        Create an interactive HTML map with Open Street Map showing the track
+    
 
-        :param track: GPS track, containing the coordinates for each points.
-                The latitude is the first index of the coordinates,
-                followed by the longitude : coord = [lat, lon]
-                Example :  track = [[lat1, lon1],
-                                    [lat2, lon2],
-                                    [lat3, lon3],
-                                    ...
-                                    [latn, lonn]]
-        type track: list (two columns, n lines)
-        :param track_corr: Corrected track. This track need to have the same
-                length than 'track', and in the same format (ie [lat, lon]).
-        type track_corr: list (two columns, n rows)
-        :param track_color: Color of the track.
-        type track_color: String
-        :param track_corr_color: Color of the corrected track.
-        type track_color: String
-        :param track_size: Size for each GPS points of the track.
-        type track_size: float
-        :param track_corr_size: Size for each points of the corrected track.
-        type track_corr_size: float
-        :param route_corr: Route of the corrected path, linking edges together.
-                Format : [lat, lon]
-        type route_corr: numpy.array like
-        :param route_size: Size of the main route.
-        type route_size: float
-        :param route_corr_size: Size of the corrected route.
-        type route_corr_size: float
-        :param route_color: Color of the main route.
-        type route_color: String
-        :param route_corr_color: Color of the corrected route.
-        type route_corr_color: String
-        :param route_opacity: Opacity of the main route.
-        type route_opacity: float
-        :param route_corr_opacity: Opacity of the corrected route.
-        type route_corr_opacity: float
-        :param proj: Draw the projection from track's point to the corrected ones.
-        type proj: boolean
-        :param proj_color: Color of the projection lines.
-        type proj_color: String
-        :param proj_size: Size of the projection lines.
-        type proj_size: float
-        :param proj_alpha: Opacity of the projection lines.
-        type proj_alpha: float
-        :param file_name: Name or path to save the HTML file
-        type file_name: String
-        :param show_graph: Show the OSMNX graph on top of the OSM layer.
-        type show_graph: boolean
+    Parameters
+    ----------
+    track : TYPE
+        DESCRIPTION.
+    track_corr : TYPE, optional
+        DESCRIPTION. The default is [].
+    track_color : TYPE, optional
+        DESCRIPTION. The default is "black".
+    track_corr_color : TYPE, optional
+        DESCRIPTION. The default is "darkcyan".
+    track_size : TYPE, optional
+        DESCRIPTION. The default is 2.
+    track_corr_size : TYPE, optional
+        DESCRIPTION. The default is 2.
+    route_corr : TYPE, optional
+        DESCRIPTION. The default is [].
+    route_size : TYPE, optional
+        DESCRIPTION. The default is 2.
+    route_corr_size : TYPE, optional
+        DESCRIPTION. The default is 2.
+    route_color : TYPE, optional
+        DESCRIPTION. The default is "black".
+    route_corr_color : TYPE, optional
+        DESCRIPTION. The default is "darkcyan".
+    route_opacity : TYPE, optional
+        DESCRIPTION. The default is .6.
+    route_corr_opacity : TYPE, optional
+        DESCRIPTION. The default is .6.
+    proj : TYPE, optional
+        DESCRIPTION. The default is False.
+    proj_color : TYPE, optional
+        DESCRIPTION. The default is "skyblue".
+    proj_size : TYPE, optional
+        DESCRIPTION. The default is 1.
+    proj_alpha : TYPE, optional
+        DESCRIPTION. The default is 1.
+    show_graph : TYPE, optional
+        DESCRIPTION. The default is False.
+    graph : TYPE, optional
+        DESCRIPTION. The default is None.
+    file_name : TYPE, optional
+        DESCRIPTION. The default is "my_map.html".
+    save : TYPE, optional
+        DESCRIPTION. The default is True.
 
-        return: folium maps
+    Returns
+    -------
+    my_map : TYPE
+        DESCRIPTION.
+
     """
+        # Create an interactive HTML map with Open Street Map showing the track
+
+        # :param track: GPS track, containing the coordinates for each points.
+        #         The latitude is the first index of the coordinates,
+        #         followed by the longitude : coord = [lat, lon]
+        #         Example :  track = [[lat1, lon1],
+        #                             [lat2, lon2],
+        #                             [lat3, lon3],
+        #                             ...
+        #                             [latn, lonn]]
+        # type track: list (two columns, n lines)
+        # :param track_corr: Corrected track. This track need to have the same
+        #         length than 'track', and in the same format (ie [lat, lon]).
+        # type track_corr: list (two columns, n rows)
+        # :param track_color: Color of the track.
+        # type track_color: String
+        # :param track_corr_color: Color of the corrected track.
+        # type track_color: String
+        # :param track_size: Size for each GPS points of the track.
+        # type track_size: float
+        # :param track_corr_size: Size for each points of the corrected track.
+        # type track_corr_size: float
+        # :param route_corr: Route of the corrected path, linking edges together.
+        #         Format : [lat, lon]
+        # type route_corr: numpy.array like
+        # :param route_size: Size of the main route.
+        # type route_size: float
+        # :param route_corr_size: Size of the corrected route.
+        # type route_corr_size: float
+        # :param route_color: Color of the main route.
+        # type route_color: String
+        # :param route_corr_color: Color of the corrected route.
+        # type route_corr_color: String
+        # :param route_opacity: Opacity of the main route.
+        # type route_opacity: float
+        # :param route_corr_opacity: Opacity of the corrected route.
+        # type route_corr_opacity: float
+        # :param proj: Draw the projection from track's point to the corrected ones.
+        # type proj: boolean
+        # :param proj_color: Color of the projection lines.
+        # type proj_color: String
+        # :param proj_size: Size of the projection lines.
+        # type proj_size: float
+        # :param proj_alpha: Opacity of the projection lines.
+        # type proj_alpha: float
+        # :param file_name: Name or path to save the HTML file
+        # type file_name: String
+        # :param show_graph: Show the OSMNX graph on top of the OSM layer.
+        # type show_graph: boolean
+
+        # return: folium maps
+
 
     med_lat = track[len(track)//2][0]
     med_lon = track[len(track)//2][1]
