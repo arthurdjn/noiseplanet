@@ -9,6 +9,8 @@ Made in collaboration with the *École Nationale des Sciences Géographiques*.
 ## Overview
 
 **noiseplanet** is a Python package that lets you extract, correct, and plot geojson data on Leaflet maps.
+The main focus of this package is on map matching, and uses Open Street Map network as reference.
+The geojson track should contains a list of GPS points that you want to match on the street graph. The only informations used for the map matching are the points coordinates.
 
 
 ## Installing
@@ -85,8 +87,3 @@ track_coor, route_corr, edgeid, stats = matching.match(graph, track, method='hmm
 ```
 ![Map Matching in Lyon](img/track_hmm.png)
 
-## Maps
-
-### Hexgrid
-
-### Route
