@@ -90,6 +90,17 @@ track = np.array([[45.7584882 ,  4.83585996],
 graph = matching.model.graph_from_track(track)
 
 track_coor, route_corr, edgeid, stats = matching.match(graph, track, method='hmm')
+
+```
+
+And visualize the results :
+
+```python
+from noiseplanet.ui import plot_html
+
+# Plot the graph
+plot_html(track, track_corr=track_corr, route_corr=route_corr,
+          proj=True, show_graph=True)
 ```
 ![Map Matching in Lyon](img/track_hmm.png)
 
