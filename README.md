@@ -1,5 +1,11 @@
 # noiseplanet
-#### Python for map matching and mapping geojson tracks
+
+[![GitHub Pipenv locked Python version](https://readthedocs.org/projects/pip/badge/)](http://noiseplanet.readthedocs.io/en/latest/index.html)
+[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](http://noiseplanet.readthedocs.io/en/latest/index.html)
+
+**Python for map matching and mapping geojson tracks**
+
+
 
 This library is a project within the research center *UMR-AE/CNRS*, working on NoisePlanet for noise mapping.
 Made in collaboration with the *École Nationale des Sciences Géographiques*.
