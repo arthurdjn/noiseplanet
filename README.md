@@ -1,7 +1,7 @@
 # noiseplanet
 
 [![GitHub Pipenv locked Python version](https://readthedocs.org/projects/pip/badge/)](http://noiseplanet.readthedocs.io/en/latest/index.html)
-[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](http://noiseplanet.readthedocs.io/en/latest/index.html)
+[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](http://http://noise-planet.org/)
 
 **Python for map matching and mapping geojson tracks**
 
@@ -126,7 +126,7 @@ plot_html(track, track_corr=track_corr, route_corr=route_corr,
 
 
 Check the read the docs documentation for more depth in the functions used.
-You also see the report publied for this project : Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
+You can also see the report publied for this project : Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
 
 
 ## Authors
