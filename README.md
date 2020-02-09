@@ -121,7 +121,7 @@ from noiseplanet.ui import plot_html
 plot_html(track, track_corr=track_corr, route_corr=route_corr,
           proj=True, show_graph=True)
 ```
-![Map Matching in Lyon](img/track_hmm.png)
+![Map Matching in Lyon](img/track_nearest.png)
 
 
 
