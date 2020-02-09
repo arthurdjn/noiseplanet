@@ -90,7 +90,6 @@ track = np.array([[45.7584882 ,  4.83585996],
 graph = matching.model.graph_from_track(track)
 
 track_coor, route_corr, edgeid, stats = matching.match(graph, track, method='hmm')
-
 ```
 
 And visualize the results :
@@ -103,4 +102,39 @@ plot_html(track, track_corr=track_corr, route_corr=route_corr,
           proj=True, show_graph=True)
 ```
 ![Map Matching in Lyon](img/track_hmm.png)
+
+You can change the matching method.
+For example, the above method uses **Hidden Markov Models**, and is the best way to match a track on the OSM (see the report for more details).
+However, you can use a naive method to match the track on the nearest road :
+
+
+```python
+track_coor, route_corr, edgeid, stats = matching.match(graph, track, method='nearest')
+```
+
+And visualize the results :
+
+```python
+from noiseplanet.ui import plot_html
+
+# Plot the graph
+plot_html(track, track_corr=track_corr, route_corr=route_corr,
+          proj=True, show_graph=True)
+```
+![Map Matching in Lyon](img/track_hmm.png)
+
+
+
+Check the read the docs documentation for more depth in the functions used.
+You also see the report publied for this project : Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
+
+
+## Authors
+
+- **Arthur Dujardin**
+- **Samuel Mermet**
+
+
+
+
 
