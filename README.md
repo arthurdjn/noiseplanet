@@ -129,6 +129,7 @@ Check the read the docs documentation for more depth in the functions used.
 You can also see the report publied for this project : Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
 
 
+
 ## Authors
 
 - **Arthur Dujardin**
