@@ -1,7 +1,7 @@
 # noiseplanet
 
 [![GitHub Pipenv locked Python version](https://readthedocs.org/projects/pip/badge/)](http://noiseplanet.readthedocs.io/en/latest/index.html)
-[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](http://http://noise-planet.org/)
+[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](http://noise-planet.org/)
 
 **Python for map matching and mapping geojson tracks**
 
