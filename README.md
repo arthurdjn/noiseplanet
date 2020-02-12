@@ -56,10 +56,6 @@ For plotting and interface, the following packages are used :
 Note that these packages are optional if you don't want to visualize the resulting maps. *SQLite3* is used to stock all the informations of a geojson tracks or polygon into an SQL database.
 
 
-### Development
-
-If you want to participate to the improvement of this project, clone the repository and open it as a project. We used *spyder* to create the packages and modules.
-
 ### Structure
 
 *noiseplanet* is composed by internal sub-packages:
