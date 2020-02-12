@@ -149,7 +149,7 @@ plot_html(track, track_corr=track_corr, route_corr=route_corr,
 
 
 Check the read the docs documentation for more depth in the functions used.
-You can also see the report publied for this project [here](pdf/report/PIRRAP_Dujardin_Mermet.pdf) : Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
+You can also see the report published for this project [here](pdf/report/PIRRAP_Dujardin_Mermet.pdf) : Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
 
 
 ## Visualization
