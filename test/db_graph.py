@@ -35,18 +35,31 @@ conn = db.connect("../../nc_data/test/database/database.db")
 # df_nearest = db.select_to_df(conn, query)
     
 
-query = """
-        SELECT LOWER(nearest_meta.device_manufacturer), AVG(nearest_point.accuracy), AVG(nearest_point.proj_accuracy), AVG(nearest_point.proj_length), AVG(nearest_point.path_length), AVG(nearest_point.unlinked)
-        FROM hmm_meta, nearest_point, nearest_meta
-        WHERE nearest_meta.track_id == nearest_point.track_id AND hmm_meta.track_id == nearest_meta.track_id
-        """
-huawei_nearest = db.select_to_df(conn, query)
+# query = """
+#         SELECT LOWER(nearest_meta.device_manufacturer), AVG(nearest_point.accuracy), AVG(nearest_point.proj_accuracy), AVG(nearest_point.proj_length), AVG(nearest_point.path_length), AVG(nearest_point.unlinked)
+#         FROM hmm_meta, nearest_point, nearest_meta
+#         WHERE nearest_meta.track_id == nearest_point.track_id AND hmm_meta.track_id == nearest_meta.track_id
+#         """
+
 
 query = """
-        SELECT LOWER(hmm_meta.device_manufacturer), AVG(hmm_point.accuracy), AVG(hmm_point.proj_accuracy), AVG(hmm_point.proj_length), AVG(hmm_point.path_length), AVG(hmm_point.unlinked)
-        FROM hmm_meta, hmm_point, nearest_meta
-        WHERE hmm_meta.track_id == hmm_point.track_id AND hmm_meta.track_id == nearest_meta.track_id
+        SELECT AVG(nearest_point.accuracy), AVG(nearest_point.proj_accuracy), AVG(nearest_point.proj_length), AVG(nearest_point.path_length), AVG(nearest_point.unlinked)
+        FROM nearest_point
         """
+
+huawei_nearest = db.select_to_df(conn, query)
+
+# query = """
+#         SELECT LOWER(hmm_meta.device_manufacturer), AVG(hmm_point.accuracy), AVG(hmm_point.proj_accuracy), AVG(hmm_point.proj_length), AVG(hmm_point.path_length), AVG(hmm_point.unlinked)
+#         FROM hmm_meta, hmm_point, nearest_meta
+#         WHERE hmm_meta.track_id == hmm_point.track_id AND hmm_meta.track_id == nearest_meta.track_id
+#         """
+
+query = """
+        SELECT AVG(hmm_point.accuracy), AVG(hmm_point.proj_accuracy), AVG(hmm_point.proj_length), AVG(hmm_point.path_length), AVG(hmm_point.unlinked)
+        FROM hmm_point
+        """
+
 huawei_hmm = db.select_to_df(conn, query)
 
 
@@ -63,7 +76,8 @@ huawei_hmm = db.select_to_df(conn, query)
 
 
 
-columns  = ['device_manufacturer', 'accuracy', 'proj_accruracy', 'proj_length', 'path_length', 'unlink']
+# columns  = ['device_manufacturer', 'accuracy', 'proj_accruracy', 'proj_length', 'path_length', 'unlink']
+columns  = ['accuracy', 'proj_accruracy', 'proj_length', 'path_length', 'unlink']
 index = ['nearest', 'hmm']
 # df_radar_huawei = pd.DataFrame([huawei_nearest.values, huawei_hmm.values], columns=columns)
 df_radar_huawei = pd.DataFrame(np.row_stack((huawei_nearest.values, huawei_hmm.values)), columns=columns)
@@ -74,6 +88,7 @@ for key in df_radar_huawei.columns[1:]:
 
 df_radar_huawei['accuracy'] = [0.5, 0.5]
 df_radar_huawei['unlink'] = [1, 0]
+df_radar_huawei.insert(loc=0, column='device_manufacturer', value=['method', 'method'])
 
 # Set data
 df = df_radar_huawei
@@ -124,6 +139,6 @@ ax.fill(angles, values, 'r', alpha=0.1)
  
 # Add legend
 plt.legend(loc='upper right', bbox_to_anchor=(1.25, 1.07), frameon=False)
-plt.savefig('../img/graph_stats.png', dpi=600, transparent=True)
+plt.savefig('../img/graph_stats3.png', dpi=600, transparent=True)
 
 

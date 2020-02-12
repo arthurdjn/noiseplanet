@@ -31,7 +31,7 @@ def linesProjection(track, track_corr):
     return lines
 
 
-def plot_graph(track, track_corr=[],
+def plot_graph(track, graph=None, track_corr=[],
              track_color="black", track_corr_color="darkcyan",
              route_color="black", route_corr_color="darkcyan",
              track_size=20, track_corr_size=20,
@@ -116,13 +116,13 @@ def plot_graph(track, track_corr=[],
 
 
 def plot_html(track, track_corr=[],
-             track_color="black", track_corr_color="darkcyan",
+             track_color="black", track_corr_color="#CD473E",
              track_size=2, track_corr_size=2,
              route_corr=[],
              route_size=2, route_corr_size=2,
-             route_color="black", route_corr_color="darkcyan",
-             route_opacity=.6, route_corr_opacity=.6,
-             proj=False, proj_color="skyblue", proj_size=1, proj_alpha=1,
+             route_color="black", route_corr_color="#CD473E",
+             route_opacity=.7, route_corr_opacity=.7,
+             proj=False, proj_color="#CD473E", proj_size=1, proj_alpha=.5,
              show_graph=False, graph=None,
              file_name="my_map.html", save=True
              ):
@@ -180,58 +180,6 @@ def plot_html(track, track_corr=[],
         DESCRIPTION.
 
     """
-        # Create an interactive HTML map with Open Street Map showing the track
-
-        # :param track: GPS track, containing the coordinates for each points.
-        #         The latitude is the first index of the coordinates,
-        #         followed by the longitude : coord = [lat, lon]
-        #         Example :  track = [[lat1, lon1],
-        #                             [lat2, lon2],
-        #                             [lat3, lon3],
-        #                             ...
-        #                             [latn, lonn]]
-        # type track: list (two columns, n lines)
-        # :param track_corr: Corrected track. This track need to have the same
-        #         length than 'track', and in the same format (ie [lat, lon]).
-        # type track_corr: list (two columns, n rows)
-        # :param track_color: Color of the track.
-        # type track_color: String
-        # :param track_corr_color: Color of the corrected track.
-        # type track_color: String
-        # :param track_size: Size for each GPS points of the track.
-        # type track_size: float
-        # :param track_corr_size: Size for each points of the corrected track.
-        # type track_corr_size: float
-        # :param route_corr: Route of the corrected path, linking edges together.
-        #         Format : [lat, lon]
-        # type route_corr: numpy.array like
-        # :param route_size: Size of the main route.
-        # type route_size: float
-        # :param route_corr_size: Size of the corrected route.
-        # type route_corr_size: float
-        # :param route_color: Color of the main route.
-        # type route_color: String
-        # :param route_corr_color: Color of the corrected route.
-        # type route_corr_color: String
-        # :param route_opacity: Opacity of the main route.
-        # type route_opacity: float
-        # :param route_corr_opacity: Opacity of the corrected route.
-        # type route_corr_opacity: float
-        # :param proj: Draw the projection from track's point to the corrected ones.
-        # type proj: boolean
-        # :param proj_color: Color of the projection lines.
-        # type proj_color: String
-        # :param proj_size: Size of the projection lines.
-        # type proj_size: float
-        # :param proj_alpha: Opacity of the projection lines.
-        # type proj_alpha: float
-        # :param file_name: Name or path to save the HTML file
-        # type file_name: String
-        # :param show_graph: Show the OSMNX graph on top of the OSM layer.
-        # type show_graph: boolean
-
-        # return: folium maps
-
 
     med_lat = track[len(track)//2][0]
     med_lon = track[len(track)//2][1]
@@ -302,7 +250,7 @@ def plot_html(track, track_corr=[],
              <i class="fa fa-circle"
                  style="float: right;
                          margin-right: 19px; margin-top: 4px;
-                         color: darkcyan">
+                         color: #CD473E">
              </i>
          <br>
              &nbsp; Projection &nbsp;
@@ -310,7 +258,7 @@ def plot_html(track, track_corr=[],
                  style="float: right;
                          margin-right: 10px; margin-top: 10px;
                          width: 30px; height: 2px;
-                         background-color: skyblue">
+                         background-color: #CD473E">
              </div>
     </div>
     """

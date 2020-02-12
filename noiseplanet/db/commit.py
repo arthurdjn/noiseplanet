@@ -156,8 +156,7 @@ def select_to_df(conn, query):
     # Convert back a stringed tuple to a tuple
     for key in df:
         # If the string is composed
-        if (type(df[key][0]) == str and ('(' in df[key][0] and ',' in df[key][0] and ')' in df[key][0]) or 
-            ('[' in df[key][0] and ',' in df[key][0] and ']' in df[key][0])):
+        if (type(df[key][0]) == str and ('(' in df[key][0] and ',' in df[key][0] and ')' in df[key][0])):
             evaluated_col = []
             for x in df[key]:
                 if x is None:

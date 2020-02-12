@@ -10,11 +10,13 @@ import json
 import numpy as np
 
 from noiseplanet import utils
-from noiseplanet.matching import model
+from noiseplanet.matcher import model
 from noiseplanet import ui
 
 
 def create_html_plot():
+    
+    print("Test Route HTML plot")
 
     trackname = 'track_1'
     file_name_raw = 'data/track/' + trackname + '.geojson'
@@ -29,10 +31,10 @@ def create_html_plot():
         geojson_hmm = json.load(f)
     
     # convert in dataframe
-    df_raw = utils.geojson_to_df(geojson_raw, extract_coordinates=True)
-    df_nearest = utils.geojson_to_df(geojson_nearest, extract_coordinates=True)
-    df_hmm = utils.geojson_to_df(geojson_hmm, extract_coordinates=True)
-    
+    df_raw = utils.geojson_to_df(geojson_raw, normalize_header=True)
+    df_nearest = utils.geojson_to_df(geojson_nearest, normalize_header=True)
+    df_hmm = utils.geojson_to_df(geojson_hmm, normalize_header=True)
+       
     # Fill None values by interpolation
     df_raw = df_raw.interpolate(method='quadratic', axis=0)
     df_nearest = df_nearest.interpolate(method='quadratic', axis=0)
@@ -43,29 +45,41 @@ def create_html_plot():
     df_nearest = df_nearest[df_nearest['type'].notnull()]
     df_hmm = df_hmm[df_hmm['type'].notnull()]
     
-    track_raw = np.column_stack((df_raw['latitude'].values, df_raw['longitude'].values))
-    track_nearest = np.column_stack((df_nearest['latitude'].values, df_nearest['longitude'].values))
-    track_hmm = np.column_stack((df_hmm['latitude'].values, df_hmm['longitude'].values))
+    # Create tracks
+    coord = np.array([*df_raw['coordinates']])
+    X = coord[:, 0]
+    Y = coord[:, 1]
+    track_raw = np.column_stack((Y, X))
+    
+    coord = np.array([*df_nearest['coordinates']])
+    X = coord[:, 0]
+    Y = coord[:, 1]
+    track_nearest = np.column_stack((Y, X))
+    
+    coord = np.array([*df_hmm['coordinates']])
+    X = coord[:, 0]
+    Y = coord[:, 1]
+    track_hmm = np.column_stack((Y, X))
     
     # track length
-    print("HTML plot\nTrack length :", len(track_raw))
+    print("Track length :", len(track_raw))
     
     graph = model.graph_from_track(track_raw)
     
-    route_nearest, statesid_nearest, stats_nearest = model.route_from_track(graph, track_nearest)
-    route_hmm, statesid_hmm, stats_hmm = model.route_from_track(graph, track_hmm)
+    route_nearest, stats_nearest = model.route_from_track(graph, track_nearest)
+    route_hmm, stats_hmm = model.route_from_track(graph, track_hmm)
     
     # plot
     ui.foroute.plot_html(track_raw, track_corr=track_nearest, route_corr=route_nearest,
               proj=True,
               graph=graph,
-              file_name='maps/my_map_nearest_' + trackname + '.html'
+              file_name='my_map_nearest_' + trackname + '.html'
               )
     
     ui.foroute.plot_html(track_raw, track_corr=track_hmm, route_corr=route_hmm,
               proj=True,
               graph=graph,
-              file_name='maps/my_map_hmm_' + trackname + '.html'
+              file_name='my_map_hmm_' + trackname + '.html'
               )
 
 
@@ -73,19 +87,17 @@ def create_html_plot():
 
 if __name__ == "__main__":
     
-    # create_html_plot()
-    
-    m = 
-    
-    Q, R = hexgrid.nearest_hexagons(lon, lat, side_length=side_length, origin=origin,
-                        proj_init=proj_init, proj_out=proj_out)
-    Xcenter, Ycenter = hexgrid.hexs_to_cartesians(Q, R, side_length=side_length, origin=origin,
-                        proj_init=proj_out, proj_out=proj_init)
-    hexagons = hexgrid.hexagons_coordinates(Xcenter, Ycenter, side_length=side_length,
-                                    proj_init=proj_init, proj_out=proj_out)
+    create_html_plot()
+        
+    # Q, R = hexgrid.nearest_hexagons(lon, lat, side_length=side_length, origin=origin,
+    #                     proj_init=proj_init, proj_out=proj_out)
+    # Xcenter, Ycenter = hexgrid.hexs_to_cartesians(Q, R, side_length=side_length, origin=origin,
+    #                     proj_init=proj_out, proj_out=proj_init)
+    # hexagons = hexgrid.hexagons_coordinates(Xcenter, Ycenter, side_length=side_length,
+    #                                 proj_init=proj_init, proj_out=proj_out)
 
 
-    add_hexagons_folium(m, hexagons)
+    # add_hexagons_folium(m, hexagons)
     
     
     
