@@ -19,8 +19,8 @@ The main focus of this package is on map matching, and uses Open Street Map netw
 The geojson track should contains a list of GPS points that you want to match on the street graph. The only informations used for the map matching are the points coordinates.
 
 <p align="center">
-  <b>Lyon area</b><br>
-  <img src="img/lyon.PNG">
+  <b>OSM network</b><br>
+  <img src="img/osm.jpg">
   <br>
 </p>
 
@@ -78,6 +78,17 @@ This project was created to provide new ways of mapping for the *UMR-AE/CNRS* te
 The **noiseplanet** package provides different tools for matching a track to the *Open Street Map* network.
 - matching to the **nearest** edge,
 - **hmm** based matching.
+
+However, the matching algorithm used within NoisePlanet is taken from **Hidden Markov Models**, as the matching is more precised.
+
+
+<p align="center">
+  <b>HMM based algorithm used</b><br>
+  <img src="img/hmm.PNG">
+</p>
+
+
+
 To match a track, composed by latitudes and longitudes, use :
 ```python
 import numpy as np
