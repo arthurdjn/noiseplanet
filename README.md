@@ -56,10 +56,6 @@ For plotting and interface, the following packages are used :
 Note that these packages are optional if you don't want to visualize the resulting maps. *SQLite3* is used to stock all the informations of a geojson tracks or polygon into an SQL database.
 
 
-### Development
-
-If you want to participate to the improvement of this project, clone the repository and open it as a project. We used *spyder* to create the packages and modules.
-
 ### Structure
 
 *noiseplanet* is composed by internal sub-packages:
@@ -153,13 +149,13 @@ plot_html(track, track_corr=track_corr, route_corr=route_corr,
 
 
 Check the read the docs documentation for more depth in the functions used.
-You can also see the report publied for this project [here](pdf/report/PIRRAP_Dujardin_Mermet.pdf) : Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
+You can also see the report published for this project [here](pdf/report/PIRRAP_Dujardin_Mermet.pdf) : Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
 
 
 ## Visualization
 
 The map matching algorithm was used to match more than 500.000 tracks from Lyon.
-Therefore, the noise can be represented per roads and sidewalks, more relevant at large scale.
+Therefore, the noise can be represented on roads and sidewalks, more relevant at larger scale.
 
 <p align="center">
   <b>Before : heat map and hexagonal grid</b><br>
