@@ -155,7 +155,7 @@ You can also see the report published for this project [here](pdf/report/PIRRAP_
 ## Visualization
 
 The map matching algorithm was used to match more than 500.000 tracks from Lyon.
-Therefore, the noise can be represented per roads and sidewalks, more relevant at large scale.
+Therefore, the noise can be represented on roads and sidewalks, more relevant at larger scale.
 
 <p align="center">
   <b>Before : heat map and hexagonal grid</b><br>
