@@ -18,6 +18,13 @@ Made in collaboration with the *École Nationale des Sciences Géographiques*.
 The main focus of this package is on map matching, and uses Open Street Map network as reference.
 The geojson track should contains a list of GPS points that you want to match on the street graph. The only informations used for the map matching are the points coordinates.
 
+<p align="center">
+  <b>Lyon area</b><br>
+  <img src="img/lyon.PNG">
+  <br>
+</p>
+
+
 The report and poster made for this project can be found [here](pdf/report/PIRRAP_Dujardin_Mermet.pdf) and [here](pdf/report/PIRPOST_Dujardin_Mermet.pdf).
 
 
@@ -103,7 +110,11 @@ from noiseplanet.ui import plot_html
 plot_html(track, track_corr=track_corr, route_corr=route_corr,
           proj=True, show_graph=True)
 ```
-![Map Matching in Lyon](img/track_hmm.png)
+
+<p align="center">
+  <img src="img/track_hmm.png">
+</p>
+
 
 You can change the matching method.
 For example, the above method uses **Hidden Markov Models**, and is the best way to match a track on the OSM (see the report for more details).
@@ -123,7 +134,10 @@ from noiseplanet.ui import plot_html
 plot_html(track, track_corr=track_corr, route_corr=route_corr,
           proj=True, show_graph=True)
 ```
-![Map Matching in Lyon](img/track_nearest.png)
+
+<p align="center">
+  <img src="img/track_nearest.png">
+</p>
 
 
 
@@ -133,7 +147,19 @@ You can also see the report publied for this project [here](pdf/report/PIRRAP_Du
 
 ## Visualization
 
+The map matching algorithm was used to match more than 500.000 tracks from Lyon.
+Therefore, the noise can be represented per roads and sidewalks, more relevant at large scale.
 
+<p align="center">
+  <b>Before : heat map and hexagonal grid</b><br>
+  <img src="img/representation_chaleur.jpg" width="48%">
+  <img src="img/représentation_hexagones.jpg" width="48%">
+</p>
+<p align="center">
+  <b>After : points and roads</b><br>
+  <img src="img/representation_ponctuelle.jpg" width="48%">
+  <img src="img/représentation_tronçons.jpg" width="48%">
+</p>
 
 
 ## Authors
