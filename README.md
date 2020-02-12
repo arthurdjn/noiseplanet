@@ -18,6 +18,8 @@ Made in collaboration with the *École Nationale des Sciences Géographiques*.
 The main focus of this package is on map matching, and uses Open Street Map network as reference.
 The geojson track should contains a list of GPS points that you want to match on the street graph. The only informations used for the map matching are the points coordinates.
 
+The report and poster made for this project can be found [here](pdf/report/PIRRAP_Dujardin_Mermet.pdf) and [here](pdf/report/PIRPOST_Dujardin_Mermet.pdf).
+
 
 ## Installing
 ### Dependencies
@@ -126,7 +128,11 @@ plot_html(track, track_corr=track_corr, route_corr=route_corr,
 
 
 Check the read the docs documentation for more depth in the functions used.
-You can also see the report publied for this project : Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
+You can also see the report publied for this project [here](pdf/report/PIRRAP_Dujardin_Mermet.pdf) : Dujardin, A., Mermet, S. (2020). État de l’art et suggestions pour la cartographie des données acoustiques mobiles. *Projet de recherche*.
+
+
+## Visualization
+
 
 
 
