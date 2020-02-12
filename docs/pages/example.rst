@@ -21,6 +21,7 @@ Firt, import the following packages :
 
 
 .. code-block:: python
+
     import numpy as np
     import osmnx as ox
     from noiseplanet import matching
@@ -71,9 +72,10 @@ However, you can use a naive method to match the track on the nearest road :
 
 And visualize the results :
 
-from noiseplanet.ui import plot_html
 
 .. code-block:: python
+
+    from noiseplanet.ui import plot_html
 
     # Plot the graph
     plot_html(track, track_corr=track_corr, route_corr=route_corr,

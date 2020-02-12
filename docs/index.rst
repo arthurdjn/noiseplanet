@@ -6,6 +6,7 @@ Welcome to Noise Planet's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :caption: Getting Started
 
     
    pages/welcome
@@ -16,7 +17,10 @@ Welcome to Noise Planet's documentation!
     
    pages/example
 
-    
+.. toctree::
+   :maxdepth: 2
+   :caption: Package
+
    pages/packages
 
 
