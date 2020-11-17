@@ -38,12 +38,10 @@ This module use several packages :
 - **osmnx**,
 - **leuvenmapmatching**, *KU Leuven - DTAI Research Group, Sirris - Elucidata Group*.
 
-To install, use :
+To install, clone the repository, and in the *noiseplanet* folder, use :
 ```
-pip install noiseplanet
-```
-If this doesn't work, clone the repository, and in the *noiseplanet* folder, use :
-```
+git clone https://github.com/arthurdjn/noiseplanet
+cd noiseplanet
 pip install .
 ```
 
