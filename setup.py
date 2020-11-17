@@ -24,11 +24,11 @@ setup(name='noiseplanet',
         author_email = 'arthur.dujardin@ensg.eu',
         license = 'Apache License-2.0',
 
-        install_requires = ['numpy', 'pandas', 'json', 'osmnx', 
+        install_requires = ['numpy', 'pandas', 'osmnx', 
                         'pyproj', 'leuvenmapmatching',
-                        'networkx', 'zipfile'],
+                        'networkx'],
         packages = find_packages(),
-        namespace_packages = ['noiseplanet'],
+        # namespace_packages = ['noiseplanet'],
         zip_safe  =False,
         classifiers = [
         # How mature is this project? Common values are
