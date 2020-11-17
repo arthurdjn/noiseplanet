@@ -90,7 +90,7 @@ To match a track, composed by latitudes and longitudes, use :
 ```python
 import numpy as np
 import osmnx as ox
-from noiseplanet import matching
+from noiseplanet.matcher import matching
 
 track = np.array([[45.7584882 ,  4.83585996],
                   [45.75848068,  4.83586747],
