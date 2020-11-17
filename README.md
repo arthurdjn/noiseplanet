@@ -1,7 +1,8 @@
 # noiseplanet
 
 [![GitHub Pipenv locked Python version](https://img.shields.io/readthedocs/noiseplanet/latest)](http://noiseplanet.readthedocs.io/en/latest/index.html)
-[![Website shields.io](https://img.shields.io/website-up-down-green-red/http/shields.io.svg)](http://noise-planet.org/)
+[![website](https://img.shields.io/badge/platform-up-green.svg)](http://noise-planet.org/)
+[![website](https://img.shields.io/badge/blog-up-green.svg)](https://arthurdujardin.com/project/noiseplanet.html)
 
 **Python for map matching and mapping geojson tracks**
 
@@ -37,12 +38,10 @@ This module use several packages :
 - **osmnx**,
 - **leuvenmapmatching**, *KU Leuven - DTAI Research Group, Sirris - Elucidata Group*.
 
-To install, use :
+To install, clone the repository, and in the *noiseplanet* folder execute the `setup.py` :
 ```
-pip install noiseplanet
-```
-If this doesn't work, clone the repository, and in the *noiseplanet* folder, use :
-```
+git clone https://github.com/arthurdjn/noiseplanet
+cd noiseplanet
 pip install .
 ```
 
@@ -89,7 +88,7 @@ To match a track, composed by latitudes and longitudes, use :
 ```python
 import numpy as np
 import osmnx as ox
-from noiseplanet import matching
+from noiseplanet.matcher import matching
 
 track = np.array([[45.7584882 ,  4.83585996],
                   [45.75848068,  4.83586747],
@@ -111,7 +110,7 @@ track_coor, route_corr, edgeid, stats = matching.match(graph, track, method='hmm
 And visualize the results :
 
 ```python
-from noiseplanet.ui import plot_html
+from noiseplanet.ui.foroute import plot_html
 
 # Plot the graph
 plot_html(track, track_corr=track_corr, route_corr=route_corr,
