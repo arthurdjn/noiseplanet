@@ -1,3 +1,7 @@
+# :warning: This package is no longer maintained due to lack of time. 
+> This package was tested in 2019 and may be deprecated depending on your environment.
+
+
 # noiseplanet
 
 [![GitHub Pipenv locked Python version](https://img.shields.io/readthedocs/noiseplanet/latest)](http://noiseplanet.readthedocs.io/en/latest/index.html)
